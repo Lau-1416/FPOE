@@ -14,6 +14,6 @@ principal.title('Prueba  de eventos')
 frame = Frame(principal, width=500, height=500)
 frame.bind("<Button-1>", eventoDarClick)
 frame.bind("<Key>", eventoPresionarTeclado)
-frame.pack
+frame.pack()
 
 principal.mainloop()
