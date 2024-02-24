@@ -55,6 +55,8 @@ txtCorreoElectronico.grid(row=4,column=1, padx=5, pady=5)
 txtFechaNacimiento = tk.Entry(frame, width=20)
 txtFechaNacimiento.grid(row=5,column=1, padx=5, pady=5)  
 
+#Unir las validaciones a el campo de texto
+
 validacion = principal.register(validarNombre)
 txtNombre.config(validate='key',validatecommand=(validacion, '%P'))
 
