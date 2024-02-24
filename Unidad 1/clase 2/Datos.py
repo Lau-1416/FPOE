@@ -3,6 +3,10 @@ from tkinter import *
 from tkinter import messagebox
 import re
 
+principal =tk.Tk()
+principal.title('Datos')
+principal.geometry("240x220")
+
 def validarLetras(entrada):
     #Patrón para aceptar solo letras (mayúsculas y minúsculas) y espacios todo lo demas esta restringido y validar nombre debe de dar True
     return re.match("^[a-zA-Z ]*$", entrada) is not None
@@ -13,11 +17,15 @@ def validarNombre(nuevo_valor):
         return True
     else:
         return False
+    
+def validar_numeros(entrada):
+    return re.match("^[0-99]*$", entrada) is not None and len(entrada) <= 2
 
-
-principal =tk.Tk()
-principal.title('Datos')
-principal.geometry("240x220")
+def validarEdad(nueva_edad):
+    if validar_numeros(nueva_edad) or nueva_edad == "":
+        return True
+    else:
+        return False
 
 
 frame = tk.Frame(principal, padx=10, pady=10)
@@ -50,13 +58,11 @@ txtFechaNacimiento.grid(row=5,column=1, padx=5, pady=5)
 validacion = principal.register(validarNombre)
 txtNombre.config(validate='key',validatecommand=(validacion, '%P'))
 
+validacion = principal.register(validarEdad)
+txtEdad.config(validate="key", validatecommand=(validacion, '%P'))
+
 frame.pack(padx=10, pady=10)
 
 
-
 principal.mainloop()
-
-
-
-
 
