@@ -10,7 +10,7 @@ def eventoPresionarTeclado(evento):
     print("Presione la tecla: ", repr(evento.char))
 
 def usuarioQuiereSalir():
-    if askyesno('Salir de la aplicacion', '¿Esta seguro de uqe quiere cerrar la aplicacion'):
+    if askyesno('Salir de la aplicacion', '¿Esta seguro de que quiere cerrar la aplicacion'):
         principal.destroy()
 
 

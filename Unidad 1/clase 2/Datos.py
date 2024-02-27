@@ -11,13 +11,29 @@ def validarLetras(entrada):
     #Patrón para aceptar solo letras (mayúsculas y minúsculas) y espacios todo lo demas esta restringido y validar nombre debe de dar True
     return re.match("^[a-zA-Z ]*$", entrada) is not None
 
-def validarNombre(nuevo_valor):
+def validarNombre(nuevoValor):
     # Solo permitir la entrada si la función de validación de letras devuelve True
-    if validarLetras(nuevo_valor) or nuevo_valor == "":
+    if validarLetras(nuevoValor) or nuevoValor == "":
         return True
     else:
+        print(f'El caracter {nuevoValor} no esta permitido')
         return False
     
+
+#Validar el campo de los apellidos
+def validarLetrasApellido(entrada):
+    #Patrón para aceptar solo letras (mayúsculas y minúsculas) y espacios todo lo demas esta restringido y validar nombre debe de dar True
+    return re.match("^[a-zA-Z ]*$", entrada) is not None
+
+def validarApellido(nuevoValor):
+    # Solo permitir la entrada si la función de validación de letras devuelve True
+    if validarLetras(nuevoValor) or nuevoValor == "":
+        return True
+    else:
+        print(f'El caracter {nuevoValor} no esta permitido')
+        return False
+    
+
 def validar_numeros(entrada):
     return re.match("^[0-99]*$", entrada) is not None and len(entrada) <= 2
 
@@ -25,6 +41,18 @@ def validarEdad(nueva_edad):
     if validar_numeros(nueva_edad) or nueva_edad == "":
         return True
     else:
+        print(f'El carcter {nueva_edad} no es valido en este campo')
+        return False
+    
+'''def validarNumerosFecha(entrada):
+    return re.match("^[0-9/]*$", entrada) is not None'''
+
+def validarFecha(nuevaFecha):
+    # Patrón para aceptar fechas en el formato DD/MM/AAAA
+    if re.match("^[\d/]{1,10}$", nuevaFecha):
+        return True
+    else:
+        print(f'Carácter no permitido: {"".join(c for c in nuevaFecha if not c.isdigit() and c != "/")}')
         return False
 
 
@@ -62,6 +90,13 @@ txtNombre.config(validate='key',validatecommand=(validacion, '%P'))
 
 validacion = principal.register(validarEdad)
 txtEdad.config(validate="key", validatecommand=(validacion, '%P'))
+
+validacion = principal.register(validarApellido)
+txtApellido.config(validate='key',validatecommand=(validacion, '%P'))
+
+validacion = principal.register(validarFecha)
+txtFechaNacimiento.config(validate='key', validatecommand=(validacion, '%P'))
+
 
 frame.pack(padx=10, pady=10)
 
