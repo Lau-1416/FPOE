@@ -47,13 +47,36 @@ def validarEdad(nueva_edad):
 '''def validarNumerosFecha(entrada):
     return re.match("^[0-9/]*$", entrada) is not None'''
 
-def validarFecha(nuevaFecha):
+'''def validarFecha(nuevaFecha):
     # Patrón para aceptar fechas en el formato DD/MM/AAAA
     if re.match("^[\d/]{1,10}$", nuevaFecha):
         return True
     else:
         print(f'Carácter no permitido: {"".join(c for c in nuevaFecha if not c.isdigit() and c != "/")}')
-        return False
+        return False'''
+
+def cuandoEscriba(event):
+    if event.char.isdigit():
+        texto = txtFechaNacimiento.get()
+        letras = 0
+        for i in texto:
+            letras += 1
+
+        if letras == 2:
+            if int(txtFechaNacimiento.get()[:2]) > 31:  # Verificar día
+                print("El día debe estar entre 01 y 31")
+                return "break"
+            txtFechaNacimiento.insert(2, "/")
+        elif letras == 5:
+            if int(txtFechaNacimiento.get()[3:5]) > 12:  # Verificar mes
+                print("El mes debe estar entre 01 y 12")
+                return "break"
+            txtFechaNacimiento.insert(5, "/")
+    else:
+        print(f'El caracter {event.char} no es valido en este campo')
+        return "break"
+
+
 
 
 frame = tk.Frame(principal, padx=10, pady=10)
@@ -94,8 +117,13 @@ txtEdad.config(validate="key", validatecommand=(validacion, '%P'))
 validacion = principal.register(validarApellido)
 txtApellido.config(validate='key',validatecommand=(validacion, '%P'))
 
-validacion = principal.register(validarFecha)
-txtFechaNacimiento.config(validate='key', validatecommand=(validacion, '%P'))
+'''validacion = principal.register(validarFecha)
+txtFechaNacimiento.config(validate='key', validatecommand=(validacion, '%P'))'''
+
+txtFechaNacimiento.bind("<Key>", cuandoEscriba)
+txtFechaNacimiento.bind("<BackSpace>", lambda _:txtFechaNacimiento.delete(tk.END))
+
+
 
 
 frame.pack(padx=10, pady=10)
