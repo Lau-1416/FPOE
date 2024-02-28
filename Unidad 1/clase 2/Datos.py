@@ -75,6 +75,14 @@ def cuandoEscriba(event):
     else:
         print(f'El caracter {event.char} no es valido en este campo')
         return "break"
+    
+def validarEntrada(text):
+    return all(c.isalpha() or c.isdigit() or c in ".@" for c in text) or text == ""
+
+def validarTecla(event):
+    if event.keysym != "BackSpace" and not validarEntrada(event.char):
+        print(f"El caracter {event.char} no es valido en este campo")
+        return "break"
 
 
 
@@ -123,6 +131,7 @@ txtFechaNacimiento.config(validate='key', validatecommand=(validacion, '%P'))'''
 txtFechaNacimiento.bind("<Key>", cuandoEscriba)
 txtFechaNacimiento.bind("<BackSpace>", lambda _:txtFechaNacimiento.delete(tk.END))
 
+txtCorreoElectronico.bind("<Key>", validarTecla)
 
 
 
