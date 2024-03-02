@@ -2,10 +2,18 @@ import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
 import re
+from tkcalendar import Calendar
+from tkcalendar import DateEntry
 
 principal =tk.Tk()
 principal.title('Datos')
 principal.geometry("350x400")
+
+frame = tk.Frame(principal, padx=10, pady=10)
+lblTitulo = tk.Label(frame, text='Complete los campos')
+lblTitulo.grid(row=0, column=0, columnspan=2) 
+
+
 
 def validarLetras(entrada):
     #Patrón para aceptar solo letras (mayúsculas y minúsculas) y espacios todo lo demas esta restringido y validar nombre debe de dar True
@@ -66,7 +74,7 @@ def validarEdad(nueva_edad):
         return False'''
 
 def cuandoEscriba(event):
-    if event.char.isdigit():
+    if event.char and event.char.isdigit():
         texto = txtFechaNacimiento.get()
         letras = 0
         for i in texto:
@@ -75,16 +83,27 @@ def cuandoEscriba(event):
         if letras == 2:
             if int(txtFechaNacimiento.get()[:2]) > 31:  # Verificar día
                 print("El día debe estar entre 01 y 31")
+                lblAdvertencia4.grid_remove()
                 return "break"
             txtFechaNacimiento.insert(2, "/")
         elif letras == 5:
             if int(txtFechaNacimiento.get()[3:5]) > 12:  # Verificar mes
                 print("El mes debe estar entre 01 y 12")
+                lblAdvertencia4.grid_remove()
                 return "break"
             txtFechaNacimiento.insert(5, "/")
+        else:
+            lblAdvertencia4.grid_remove()  # Ocultar la advertencia si se ingresa un carácter válido
+    elif event.char == '':
+    # Permitir el evento de borrar
+        if len(txtFechaNacimiento.get()) <= 1:
+            lblAdvertencia4.grid_remove()  # Ocultar la advertencia si el campo de fecha está vacío después de borrar
+        return
     else:
-        print(f'El caracter {event.char} no es valido en este campo')
+        print(f'El caracter {event.char} no es válido en este campo')
+        lblAdvertencia4.grid(row=10, column=1)
         return "break"
+    
     
 def validarEntrada(text):
     return all(c.isalpha() or c.isdigit() or c in ".@" for c in text) or text == ""
@@ -93,35 +112,29 @@ def validarTecla(event):
     if event.keysym != "BackSpace" and not validarEntrada(event.char):
         print(f"El caracter {event.char} no es valido en este campo")
         return "break"
-
-
-
-
-frame = tk.Frame(principal, padx=10, pady=10)
-lblTitulo = tk.Label(frame, text='Complete los campos')
-lblTitulo.grid(row=0, column=0, columnspan=2) 
+    
 
 
 lblNombre = tk.Label(frame, text='Nombre:')
 lblNombre.grid(row=1, column=0, padx=5, pady=10)
-lblAdvertencia = tk.Label(frame, text='Solo se permiten letras')
+lblAdvertencia = tk.Label(frame, text='Solo se permiten letras', fg="red")
 #lblAdvertencia.grid(row=2,column=1)
 lblApellido = tk.Label(frame, text='Apellido:')
 lblApellido.grid(row=3, column=0, padx=5, pady=10)
-lblAdvertencia1 = tk.Label(frame, text='Solo se permiten letras')
+lblAdvertencia1 = tk.Label(frame, text='Solo se permiten letras', fg="red")
 #lblAdvertencia1.grid(row=4,column=1)
 lblEdad = tk.Label(frame, text='Edad:')
 lblEdad.grid(row=5,column=0, padx=5, pady=10)
-lblAdvertencia2 = tk.Label(frame, text='Solo se permiten numeros')
+lblAdvertencia2 = tk.Label(frame, text='Solo se permiten numeros', fg="red")
 lblAdvertencia2.grid(row=6,column=1)
 lblCorreoElectronico = tk.Label(frame, text='Correo Electrónico:')
 lblCorreoElectronico.grid(row=7, column=0, padx=5, pady=10)
-lblAdvertencia3 = tk.Label(frame, text='Solo se permiten(Aa, ., 0-9 ,@)')
+lblAdvertencia3 = tk.Label(frame, text='Solo se permiten(Aa, ., 0-9 ,@)', fg="red")
 lblAdvertencia3.grid(row=8,column=1)
 lblFechaNacimiento = tk.Label(frame, text='Fecha Nacimiento:')
 lblFechaNacimiento.grid(row=9, column=0, padx=5, pady=10)
-lblAdvertencia4 = tk.Label(frame, text='Solo se permiten Numeros y "/"')
-lblAdvertencia4.grid(row=10,column=1)
+lblAdvertencia4 = tk.Label(frame, text='Solo se permiten Numeros y "/"', fg="red")
+lblAdvertencia4.grid_remove()
 
 txtNombre = tk.Entry(frame, width=20)
 txtNombre.grid(row=1,column=1, padx=5, pady=10)  
@@ -131,8 +144,8 @@ txtEdad = tk.Entry(frame, width=20)
 txtEdad.grid(row=5,column=1, padx=5, pady=10)  
 txtCorreoElectronico = tk.Entry(frame, width=20)
 txtCorreoElectronico.grid(row=7,column=1, padx=5, pady=10)  
-txtFechaNacimiento = tk.Entry(frame, width=20)
-txtFechaNacimiento.grid(row=9,column=1, padx=5, pady=10)  
+txtFechaNacimiento = DateEntry(frame, date_pattern='dd/mm/yyyy', show_week_numbers=False)
+txtFechaNacimiento.grid(row=9,column=1,padx=5, pady=10)
 
 #Unir las validaciones a el campo de texto
 
@@ -151,7 +164,7 @@ txtApellido.bind('<KeyRelease>', validarApellido)
 '''validacion = principal.register(validarFecha)
 txtFechaNacimiento.config(validate='key', validatecommand=(validacion, '%P'))'''
 
-txtFechaNacimiento.bind("<Key>", cuandoEscriba)
+txtFechaNacimiento.bind("<KeyRelease>", cuandoEscriba)
 txtFechaNacimiento.bind("<BackSpace>", lambda _:txtFechaNacimiento.delete(tk.END))
 
 txtCorreoElectronico.bind("<Key>", validarTecla)
