@@ -14,7 +14,6 @@ lblTitulo = tk.Label(frame, text='Complete los campos')
 lblTitulo.grid(row=0, column=0, columnspan=2) 
 
 
-
 def validarLetras(entrada):
     #Patrón para aceptar solo letras (mayúsculas y minúsculas) y espacios todo lo demas esta restringido y validar nombre debe de dar True
     return re.match("^[a-zA-Z ]*$", entrada) is not None
@@ -30,6 +29,21 @@ def validarNombre(event=None):
     else:
         lblAdvertencia.grid(row=2, column=1) # Mostrar el Label de advertencia
         print(f'Caracter {nuevoValor} no es valido')
+        return False
+
+def validar_numeros(entrada):
+    return re.match("^[0-99]*$", entrada) is not None and len(entrada) <= 2
+
+def validar_numeros(entrada):
+    return re.match("^[0-99]*$", entrada) is not None and len(entrada) <= 2
+
+def validarEdad(nueva_edad):
+    if validar_numeros(nueva_edad) or nueva_edad == "":
+        lblAdvertencia2.grid_remove()
+        return True
+    else:
+        lblAdvertencia2.grid(row=6, column=1)
+        print(f'El caracter {nueva_edad} no es valido en este campo')
         return False
     
 
@@ -57,9 +71,11 @@ def validar_numeros(entrada):
 
 def validarEdad(nueva_edad):
     if validar_numeros(nueva_edad) or nueva_edad == "":
+        lblAdvertencia2.grid_remove()
         return True
     else:
-        print(f'El carcter {nueva_edad} no es valido en este campo')
+        lblAdvertencia2.grid(row=6, column=1)
+        print(f'El caracter {nueva_edad} no es valido en este campo')
         return False
     
 '''def validarNumerosFecha(entrada):
@@ -126,7 +142,7 @@ lblAdvertencia1 = tk.Label(frame, text='Solo se permiten letras', fg="red")
 lblEdad = tk.Label(frame, text='Edad:')
 lblEdad.grid(row=5,column=0, padx=5, pady=10)
 lblAdvertencia2 = tk.Label(frame, text='Solo se permiten numeros', fg="red")
-lblAdvertencia2.grid(row=6,column=1)
+lblAdvertencia2.grid_remove()
 lblCorreoElectronico = tk.Label(frame, text='Correo Electrónico:')
 lblCorreoElectronico.grid(row=7, column=0, padx=5, pady=10)
 lblAdvertencia3 = tk.Label(frame, text='Solo se permiten(Aa, ., 0-9 ,@)', fg="red")
