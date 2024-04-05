@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import *
+from .views.bafle_view import *
+from .views.post_view import *
 
 app_name = 'api'
 

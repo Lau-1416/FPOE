@@ -9,11 +9,3 @@ class Post(TimeStampedModel, SoftDeletableModel):
 	slug 				= models.SlugField(blank=True, unique=True)
 	def __str__(self):
 		return self.title
-
-class Post(TimeStampedModel, SoftDeletableModel):
-	marca  = models.CharField(max_length=50, null=False, blank=True)
-	tamaño = models.TextField(max_length=5000, null=False, blank=True)
-	color  = models.TextField(auto_now_add=True, verbose_name="date published")
-	precio = models.IntegerField()
-	def __str__(self):
-		return self.titles	
