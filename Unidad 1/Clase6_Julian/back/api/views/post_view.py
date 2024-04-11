@@ -1,9 +1,10 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models import Post
-from .serializers import PostSerializers
+from api.models.post import Post
+from api.serializers.post_serializers import PostSerializers
 from rest_framework import status
 from django.http import Http404
+
     
 class Post_APIView(APIView):
     def get(self, request, format=None, *args, **kwargs):

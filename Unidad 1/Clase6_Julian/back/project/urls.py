@@ -15,12 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import *
+from api.views.universidad_view import *
+from api.views.post_view import *
+from django.conf.urls import include
+from api.views.universidad_view import UniversidadAPIView, UniversidadDetailAPIView
+from api.views.post_view import PostAPIView, PostDetailAPIView
 
 app_name = 'api'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('v1/post', Post_APIView.as_view()), 
-    path('v1/post/<int:pk>/', Post_APIView_Detail.as_view()),
+    path('post/', PostAPIView.as_view(), name='post-list'),
+    path('post/<int:pk>/', PostDetailAPIView.as_view(), name='post-detail'),
+    path('universidad/', UniversidadAPIView.as_view(), name='universidad-list'),
+    path('universidad/<int:pk>/', UniversidadDetailAPIView.as_view(), name='universidad-detail'),
+    
 ]
