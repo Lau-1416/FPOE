@@ -4,4 +4,4 @@ from api.models.bafle import Bafle
 class BafleSerializers(serializers.ModelSerializer):
     class Meta:
         model = Bafle  
-        exclude = ['is_removed', 'created', 'modified']
+        #exclude = ['is_removed', 'created', 'modified']

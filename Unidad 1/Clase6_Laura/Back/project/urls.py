@@ -24,4 +24,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/post', Post_APIView.as_view()), 
     path('v1/post/<int:pk>/', Post_APIView_Detail.as_view()),
+    path('v1/bafle', Bafle_APIView.as_view()), 
+    path('v1/bafle/<int:pk>/', Post_APIView_Detail.as_view()),
 ]
+
+
