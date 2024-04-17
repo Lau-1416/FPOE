@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import *
+from .views.post_view import *
+from .views.casa_view import *
+
 
 app_name = 'api'
 
@@ -23,4 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/post', Post_APIView.as_view()), 
     path('v1/post/<int:pk>/', Post_APIView_Detail.as_view()),
+    path("v1/casa", Casa_APIView.as_view()),
+    path("v1/casa/<int:pk>/",Casa_APIView_Detail.as_view()),
+
 ]

@@ -11,11 +11,3 @@ class Post(TimeStampedModel, SoftDeletableModel):
 	
 
 
-class Post(TimeStampedModel, SoftDeletableModel):
-	Localidad 				= models.CharField(max_length=50, null=False, blank=True)
-	direccion 				= models.TextField(max_length=5000, null=False, blank=True)
-	barrio  		= models.DateTimeField(auto_now_add=True, verbose_name="date published")
-	valor 		= models.DateTimeField(auto_now=True, verbose_name="date updated")
-	
-	def __str__(self):
-		return self.title
