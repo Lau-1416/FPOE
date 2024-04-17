@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 class Universidad(models.Model):
 	docente		= models.CharField(max_length=50)
 	estudiante 	= models.CharField(max_length=50)
