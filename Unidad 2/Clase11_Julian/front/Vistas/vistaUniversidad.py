@@ -1,10 +1,15 @@
 import tkinter as tk
-import requests  #Para realizar solicitudes HTTP
 from tkinter import messagebox
 import re
+import requests
+import sys
+sys.path.append("Controladores")
+from controladores.validaciones import Validaciones
+
+validaciones = Validaciones()
 
 
-def ingresar_universidad():
+'''def ingresar_universidad():
     #Obtener los datos de los campos de entrada
     docente = txtDocente.get()
     estudiante = txtEstudiante.get()
@@ -37,47 +42,58 @@ def ingresar_universidad():
         else:
             messagebox.showerror("Error", f"Error al crear universidad: {response.text}")
     except Exception as e:
-        messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+        messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")'''
 
-def validarNombre(entrada):
-    #Patrón para aceptar solo letras (mayúsculas y minúsculas) y espacios todo lo demas esta restringido y validar nombre debe de dar True
-    return re.match("^[a-zA-Z ]*$", entrada) is not None
 
-#Configuraracion la ventana principal
 principal = tk.Tk()
 principal.title('Universidad')
-principal.geometry("240x220")
+principal.geometry("290x220")
 
 frame = tk.Frame(principal, padx=10, pady=10)
+frame.pack(padx=10, pady=10)
+
 lblTitulo = tk.Label(frame, text='Ingresar Datos')
 lblTitulo.grid(row=0, column=0, columnspan=2) 
 
 lblDocente = tk.Label(frame, text='Docente:')
 lblDocente.grid(row=1, column=0, padx=5, pady=5)  
 lblEtudiante = tk.Label(frame, text='Estudiante:')
-lblEtudiante.grid(row=2, column=0, padx=5, pady=5)
+lblEtudiante.grid(row=3, column=0, padx=5, pady=5)
 lblSalon = tk.Label(frame, text='Salón:')
-lblSalon.grid(row=3, column=0, padx=5, pady=5)
+lblSalon.grid(row=5, column=0, padx=5, pady=5)
 lblLocal = tk.Label(frame, text='Local:')
-lblLocal.grid(row=4, column=0, padx=5, pady=5)
+lblLocal.grid(row=7, column=0, padx=5, pady=5)
 
 txtDocente = tk.Entry(frame, width=20)
 txtDocente.grid(row=1, column=1, padx=5, pady=5)  
+txtDocente.lblAdvertencia = tk.Label(frame, text='Solo se permiten letras', fg="red")
+txtDocente.lblAdvertencia.grid(row=2, column=1, sticky="w")
+txtDocente.lblAdvertencia.grid_remove()
+
 txtEstudiante = tk.Entry(frame, width=20)
-txtEstudiante.grid(row=2, column=1, padx=5, pady=5)
+txtEstudiante.grid(row=3, column=1, padx=5, pady=5)
+txtEstudiante.lblAdvertencia1 = tk.Label(frame, text='Solo se permiten letras', fg="red")
+txtEstudiante.lblAdvertencia1.grid(row=4, column=1, sticky="w")
+txtEstudiante.lblAdvertencia1.grid_remove()
+
 txtSalon = tk.Entry(frame, width=20)
-txtSalon.grid(row=3, column=1, padx=5, pady=5)  
+txtSalon.grid(row=5, column=1, padx=5, pady=5)  
+txtSalon.lblAdvertencia = tk.Label(frame, text='Solo se permiten Numeros-Letras', fg="red")
+txtSalon.lblAdvertencia.grid(row=6, column=1, sticky="w")
+txtSalon.lblAdvertencia.grid_remove()
+
 txtLocal = tk.Entry(frame, width=20)
-txtLocal.grid(row=4, column=1, padx=5, pady=5)  
+txtLocal.grid(row=7, column=1, padx=5, pady=5)
+txtLocal.lblAdvertencia = tk.Label(frame, text='Solo se permiten Numeros-Letras', fg="red")
+txtLocal.lblAdvertencia.grid(row=8, column=1, sticky="w")
+txtLocal.lblAdvertencia.grid_remove()
 
-btnIngresar = tk.Button(frame, text='Ingresar', command=ingresar_universidad)
-btnIngresar.grid(row=5, column=1, columnspan=2)
+btnIngresar = tk.Button(frame, text='Ingresar', command=validaciones.ingresar_universidad)
+btnIngresar.grid(row=9, column=1, columnspan=2)
 
-frame.pack(padx=10, pady=10)
-
-
-
-validacion = principal.register(validarNombre)
-txtDocente.config(validate='key',validatecommand=(validacion, '%P'))
+txtDocente.bind('<KeyRelease>', Validaciones.mostrar_advertencia)
+txtEstudiante.bind('<KeyRelease>', Validaciones.mostrar_advertencia1)
+txtSalon.bind('<KeyRelease>', Validaciones.mostrar_advertencia_salon)
+txtLocal.bind('<KeyRelease>', Validaciones.mostrar_advertencia_local)
 
 principal.mainloop()

@@ -1,2 +1,7 @@
+from Vistas import vistaUniversidad
+
+
 class Universidad():
-    pass
+    def __init__(self, principal):
+        pass
+    
