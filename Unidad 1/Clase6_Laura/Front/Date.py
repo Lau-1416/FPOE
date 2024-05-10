@@ -64,4 +64,4 @@ btnIngresar.grid(row=5, column=1, columnspan=2)
 
 frame.pack(padx=10, pady=10)
 
-principal.mainloop()
+principal.mainloop()    

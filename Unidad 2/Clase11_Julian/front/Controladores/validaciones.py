@@ -1,6 +1,6 @@
 import requests
 from tkinter import messagebox
-from vistas import vistaUniversidad
+from Vistas import vistaUniversidad
 import re
 
 class Validaciones():

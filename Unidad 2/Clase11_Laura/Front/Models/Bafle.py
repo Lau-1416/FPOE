@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class Usuario():
+class Bafle():
     
     def __init__(self, ventana_principal):
         pass

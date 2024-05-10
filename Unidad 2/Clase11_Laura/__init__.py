@@ -1,4 +1,4 @@
-from vistas.interfazgraf import Interfazgraf
+from Front.Views import VistasBafle
 
 if __name__ == '__main__':
-    Interfazgraf.mostrar_interfazgraf()
+    VistasBafle

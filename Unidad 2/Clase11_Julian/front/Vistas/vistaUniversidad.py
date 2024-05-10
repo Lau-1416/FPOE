@@ -4,7 +4,7 @@ import re
 import requests
 import sys
 sys.path.append("Controladores")
-from controladores.validaciones import Validaciones
+from Controladores.validaciones import Validaciones
 
 validaciones = Validaciones()
 
