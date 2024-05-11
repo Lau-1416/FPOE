@@ -58,7 +58,7 @@ txtTamaño.bind('<KeyRelease>', Validaciones.Advertencia2)
 txtColor.bind('<KeyRelease>', Validaciones.Advertencia3)
 txtPrecio.bind('<KeyRelease>', Validaciones.Advertencia4)
 
-btnIngresar = tk.Button(frame, text='Ingresar', command=ingresar_bafle)
+btnIngresar = tk.Button(frame, text='Ingresar', command=Validaciones.ingresar_bafle)
 btnIngresar.grid(row=9, column=1, columnspan=2, pady=10)
 
 principal.mainloop()
