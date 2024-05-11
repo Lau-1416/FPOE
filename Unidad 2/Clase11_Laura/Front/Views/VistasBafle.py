@@ -1,4 +1,5 @@
 import tkinter as tk
+import re
 from tkinter import messagebox
 from Front.Controller.Validaciones import Validaciones
 
@@ -10,25 +11,40 @@ frame = tk.Frame(principal, padx=10, pady=10)
 frame.pack()  
 
 lblTitulo = tk.Label(frame, text='Ingresar Datos')
-lblTitulo.grid(row=0, column=0, columnspan=2, pady=10)
+lblTitulo.grid(row=0, column=0, columnspan=2) 
 
 lblMarca = tk.Label(frame, text='Marca:')
-lblMarca.grid(row=1, column=0, padx=5, pady=5)
+lblMarca.grid(row=1, column=0, padx=5, pady=5)  
 lblTamaño = tk.Label(frame, text='Tamaño:')
-lblTamaño.grid(row=2, column=0, padx=5, pady=5)
+lblTamaño.grid(row=3, column=0, padx=5, pady=5)
 lblColor = tk.Label(frame, text='Color:')
-lblColor.grid(row=3, column=0, padx=5, pady=5)
+lblColor.grid(row=5, column=0, padx=5, pady=5)
 lblPrecio = tk.Label(frame, text='Precio:')
-lblPrecio.grid(row=4, column=0, padx=5, pady=5)
+lblPrecio.grid(row=7, column=0, padx=5, pady=5)
 
 txtMarca = tk.Entry(frame, width=20)
-txtMarca.grid(row=1, column=1, padx=5, pady=5)
+txtMarca.grid(row=1, column=1, padx=5, pady=5)  
+txtMarca.lblAdvertencia1 = tk.Label(frame, text='Solo se permiten letras y números', fg="red")
+txtMarca.lblAdvertencia1.grid(row=2, column=1, sticky="w")
+txtMarca.lblAdvertencia1.grid_remove()
+
 txtTamaño = tk.Entry(frame, width=20)
-txtTamaño.grid(row=2, column=1, padx=5, pady=5)
+txtTamaño.grid(row=3, column=1, padx=5, pady=5)
+txtTamaño.lblAdvertencia2 = tk.Label(frame, text='Solo se permiten letras y números', fg="red")
+txtTamaño.lblAdvertencia2.grid(row=4, column=1, sticky="w")
+txtTamaño.lblAdvertencia2.grid_remove()
+
 txtColor = tk.Entry(frame, width=20)
-txtColor.grid(row=3, column=1, padx=5, pady=5)
+txtColor.grid(row=5, column=1, padx=5, pady=5)  
+txtColor.lblAdvertencia3 = tk.Label(frame, text='Solo se permiten números', fg="red")
+txtColor.lblAdvertencia3.grid(row=6, column=1, sticky="w")
+txtColor.lblAdvertencia3.grid_remove()
+
 txtPrecio = tk.Entry(frame, width=20)
-txtPrecio.grid(row=4, column=1, padx=5, pady=5)
+txtPrecio.grid(row=7, column=1, padx=5, pady=5)
+txtPrecio.lblAdvertencia4 = tk.Label(frame, text='Solo se permiten Numeros-Letras', fg="red")
+txtPrecio.lblAdvertencia4.grid(row=8, column=1, sticky="w")
+txtPrecio.lblAdvertencia4.grid_remove()
 
 def ingresar_bafle():
     marca = txtMarca.get()
@@ -37,12 +53,12 @@ def ingresar_bafle():
     precio = txtPrecio.get()
     messagebox.showinfo("Información de Bafle", f"Marca: {marca}\nTamaño: {tamaño}\nColor: {color}\nPrecio: {precio}")
     
-txtMarca.bind('<KeyRelease>', Validaciones.mostrar_advertencia1)
-txtTamaño.bind('<KeyRelease>', Validaciones.mostrar_advertencia2)
-txtColor.bind('<KeyRelease>', Validaciones.mostrar_advertencia3)
-txtPrecio.bind('<KeyRelease>', Validaciones.mostrar_advertencia4)
+txtMarca.bind('<KeyRelease>', Validaciones.Advertencia1)
+txtTamaño.bind('<KeyRelease>', Validaciones.Advertencia2)
+txtColor.bind('<KeyRelease>', Validaciones.Advertencia3)
+txtPrecio.bind('<KeyRelease>', Validaciones.Advertencia4)
 
 btnIngresar = tk.Button(frame, text='Ingresar', command=ingresar_bafle)
-btnIngresar.grid(row=5, column=1, columnspan=2, pady=10)
+btnIngresar.grid(row=9, column=1, columnspan=2, pady=10)
 
 principal.mainloop()

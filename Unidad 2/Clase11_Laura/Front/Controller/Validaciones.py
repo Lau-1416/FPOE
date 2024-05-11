@@ -22,7 +22,7 @@ class Validaciones():
             "tamaño": tamaño,
             "color": color,
             "precio": precio
-        }
+               }
 
         #url
         url = 'http://127.0.0.1:8000/v1/bafle'
@@ -39,35 +39,36 @@ class Validaciones():
             
     def validarLetras(entrada):
         return re.match("^[a-zA-Z ]*$", entrada) is not None
+    
+    def validar_numeros(entrada):
+        return re.match("^[0-9]{1,2}$", entrada) is not None and len(entrada) <= 2
 
-    def mostrar_advertencia1(event):
-            nuevoValor = event.widget.get()
-            if not nuevoValor:
-                event.widget.lblAdvertencia1.grid_remove() 
-            elif not re.match("^[a-zA-Z0-9 ]*$", nuevoValor):
-                event.widget.lblAdvertencia1.grid(row=6, column=1) 
-            else:
-                event.widget.lblAdvertencia1.grid_remove() 
+    def Advertencia1(event=None):
+        nuevoValor = event.widget.get()
+        if not nuevoValor or re.match("^[a-zA-Z-0-9 ]*$", nuevoValor):
+            event.widget.lblAdvertencia1.grid_remove()
+        else:
+            event.widget.lblAdvertencia1.grid(row=2, column=1)
                 
-    def mostrar_advertencia2(event):
+    def Advertencia2(event=None):
             nuevoValor = event.widget.get()
-            if not nuevoValor or re.match("^[a-zA-Z ]*$", nuevoValor):
+            if not nuevoValor or re.match("^[a-zA-Z-0-9 ]*$", nuevoValor):
                 event.widget.lblAdvertencia2.grid_remove()
             else:
                 event.widget.lblAdvertencia2.grid(row=4, column=1)
                 
-    def mostrar_advertencia3(event):
+    def Advertencia3(event=None):
             nuevoValor = event.widget.get()
             if not nuevoValor:
-                event.widget.lblAdvertencia.grid_remove() 
-            elif not re.match("^[a-zA-Z0-9 ]*$", nuevoValor):
+                event.widget.lblAdvertencia3.grid_remove() 
+            elif not re.match("^[a-zA-Z ]*$", nuevoValor):
                 event.widget.lblAdvertencia3.grid(row=6, column=1) 
             else:
                 event.widget.lblAdvertencia3.grid_remove() 
             
-    def mostrar_advertencia4(event):
+    def Advertencia4(event):
             nuevoValor = event.widget.get()
-            if not re.match("^[a-zA-Z0-9 ]*$", nuevoValor):
+            if not re.match("^[0-9 ]*$", nuevoValor):
                 VistasBafle.txtLocal.lblAdvertencia4.grid(row=8, column=1) 
             else:
                 VistasBafle.txtLocal.lblAdvertencia4.grid_remove() 
