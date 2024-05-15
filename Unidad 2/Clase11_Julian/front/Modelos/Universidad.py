@@ -1,4 +1,4 @@
-from Vistas import vistaUniversidad
+from vistas import vistaUniversidad
 
 
 class Universidad():

@@ -5,10 +5,12 @@ import requests
 import sys
 sys.path.append("Controladores")
 from controladores.validaciones import Validaciones
+from controladores.peticiones import Peticiones
 
 validaciones = Validaciones()
 
-
+def peticion_ingresar_universidad():
+    Peticiones.ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal)
 '''def ingresar_universidad():
     #Obtener los datos de los campos de entrada
     docente = txtDocente.get()
@@ -88,7 +90,7 @@ txtLocal.lblAdvertencia = tk.Label(frame, text='Solo se permiten Numeros-Letras'
 txtLocal.lblAdvertencia.grid(row=8, column=1, sticky="w")
 txtLocal.lblAdvertencia.grid_remove()
 
-btnIngresar = tk.Button(frame, text='Ingresar', command=validaciones.ingresar_universidad)
+btnIngresar = tk.Button(frame, text='Ingresar', command=peticion_ingresar_universidad)
 btnIngresar.grid(row=9, column=1, columnspan=2)
 
 txtDocente.bind('<KeyRelease>', Validaciones.mostrar_advertencia)
