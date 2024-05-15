@@ -4,8 +4,12 @@ import re
 import requests
 import sys
 sys.path.append("Controladores")
+<<<<<<< HEAD
 from controladores.validaciones import Validaciones
 from controladores.peticiones import Peticiones
+=======
+from Controladores.validaciones import Validaciones
+>>>>>>> cb6e50cbd6105598d5f6218976078f37554bba00
 
 validaciones = Validaciones()
 

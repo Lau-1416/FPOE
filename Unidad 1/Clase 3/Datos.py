@@ -51,7 +51,7 @@ def validarNombre(event=None):
     if nuevoValor == "":
         lblAdvertencia.grid_remove()
         ocultarBoton()
-        return True
+        return True 
     elif validarLetras(nuevoValor):
         lblAdvertencia.grid_remove()
         ocultarBoton()
