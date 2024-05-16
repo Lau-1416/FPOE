@@ -5,7 +5,7 @@ from Front.Controller.Validaciones import Validaciones
 from Front.Controller.Peticiones import Peticiones
 
 def Peticion_ingresar_bafle():
-    Peticiones.ingresar_universidad(txtMarca, txtTamaño, txtColor, txtPrecio)
+    Peticiones.ingresar_bafle(txtMarca, txtTamaño, txtColor, txtPrecio)
     
 principal = tk.Tk()
 principal.title('Bafle')
