@@ -68,8 +68,11 @@ class Validaciones():
             
     def Advertencia4(event):
             nuevoValor = event.widget.get()
-            if not re.match("^[0-9 ]*$", nuevoValor):
-                VistasBafle.txtLocal.lblAdvertencia4.grid(row=8, column=1) 
+            if not nuevoValor:
+                event.widget.lblAdvertencia4.grid_remove() 
+            elif not re.match("^[0-9 ]*$", nuevoValor):
+                event.widget.lblAdvertencia4.grid(row=8, column=1) 
             else:
-                VistasBafle.txtLocal.lblAdvertencia4.grid_remove() 
+                event.widget.lblAdvertencia4.grid_remove() 
+            
     

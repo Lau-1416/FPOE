@@ -2,7 +2,11 @@ import tkinter as tk
 import re
 from tkinter import messagebox
 from Front.Controller.Validaciones import Validaciones
+from Front.Controller.Peticiones import Peticiones
 
+def Peticion_ingresar_bafle():
+    Peticiones.ingresar_bafle(txtMarca, txtTamaño, txtColor, txtPrecio)
+    
 principal = tk.Tk()
 principal.title('Bafle')
 principal.geometry("300x250")  
@@ -36,13 +40,13 @@ txtTamaño.lblAdvertencia2.grid_remove()
 
 txtColor = tk.Entry(frame, width=20)
 txtColor.grid(row=5, column=1, padx=5, pady=5)  
-txtColor.lblAdvertencia3 = tk.Label(frame, text='Solo se permiten números', fg="red")
+txtColor.lblAdvertencia3 = tk.Label(frame, text='Solo se permiten letras', fg="red")
 txtColor.lblAdvertencia3.grid(row=6, column=1, sticky="w")
 txtColor.lblAdvertencia3.grid_remove()
 
 txtPrecio = tk.Entry(frame, width=20)
 txtPrecio.grid(row=7, column=1, padx=5, pady=5)
-txtPrecio.lblAdvertencia4 = tk.Label(frame, text='Solo se permiten Numeros-Letras', fg="red")
+txtPrecio.lblAdvertencia4 = tk.Label(frame, text='Solo se permiten números', fg="red")
 txtPrecio.lblAdvertencia4.grid(row=8, column=1, sticky="w")
 txtPrecio.lblAdvertencia4.grid_remove()
 
@@ -58,7 +62,7 @@ txtTamaño.bind('<KeyRelease>', Validaciones.Advertencia2)
 txtColor.bind('<KeyRelease>', Validaciones.Advertencia3)
 txtPrecio.bind('<KeyRelease>', Validaciones.Advertencia4)
 
-btnIngresar = tk.Button(frame, text='Ingresar', command=Validaciones.ingresar_bafle)
-btnIngresar.grid(row=9, column=1, columnspan=2, pady=10)
+btnIngresar = tk.Button(frame, text='Ingresar', command=Peticion_ingresar_bafle)
+btnIngresar.grid(row=10, column=1, columnspan=2, pady=10)
 
 principal.mainloop()
