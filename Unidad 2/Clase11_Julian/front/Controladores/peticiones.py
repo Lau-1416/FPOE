@@ -50,6 +50,3 @@ class Peticiones():
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
 
 
-    def consultar(self, id):
-        resultado = requests.get('http://127.0.0.1:8000/v1/universidad'+ '/' + str(id))
-        return resultado.json()

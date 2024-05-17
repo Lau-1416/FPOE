@@ -14,9 +14,6 @@ validaciones = Validaciones()
 def peticion_ingresar_universidad():
     Peticiones.ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal)
 
-def accion_consultar_boton(txtEstudiante, id):
-    resultado = Peticiones.consultar(id)
-    txtEstudiante.config(text=resultado.get('estudiante'))
 
 '''def ingresar_universidad():
     #Obtener los datos de los campos de entrada
@@ -102,8 +99,6 @@ txtLocal.lblAdvertencia.grid_remove()
 btnIngresar = tk.Button(frame, text='Ingresar', command=peticion_ingresar_universidad)
 btnIngresar.grid(row=9, column=1, columnspan=2)
 
-btnConsultar = tk.Button(frame, text='Consultar', command=accion_consultar_boton)
-btnConsultar.grid(row=10, column=1, columnspan=2)
 
 txtDocente.bind('<KeyRelease>', Validaciones.mostrar_advertencia)
 txtEstudiante.bind('<KeyRelease>', Validaciones.mostrar_advertencia1)
