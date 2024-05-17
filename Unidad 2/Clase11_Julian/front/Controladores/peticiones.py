@@ -12,7 +12,7 @@ from vistas import vistaUniversidad
 import requests
 from tkinter import messagebox
 
-class Peticiones:
+class Peticiones():
     @staticmethod
     def ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal):
         docente = txtDocente.get()
@@ -48,3 +48,8 @@ class Peticiones:
                 messagebox.showerror("Error", f"Error al crear universidad: {response.text}")
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+
+
+    def consultar(self, id):
+        resultado = requests.get('http://127.0.0.1:8000/v1/universidad'+ '/' + str(id))
+        return resultado.json()

@@ -1,6 +1,6 @@
 import requests
 from tkinter import messagebox
-from Vistas import vistaUniversidad
+from vistas import vistaUniversidad
 import re
 #from controladores.peticiones import Peticiones
 
