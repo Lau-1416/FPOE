@@ -48,5 +48,45 @@ class Peticiones():
                 messagebox.showerror("Error", f"Error al crear universidad: {response.text}")
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+  
+    @staticmethod
+    def consultar(id):
+        try:
+            resultado = requests.get('http://127.0.0.1:8000/v1/universidad/' + str(id))
+            resultado.raise_for_status()  # Verifica si la solicitud tuvo éxito
+            return resultado.json()
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+            return None
 
+    @staticmethod
+    def accion_consultar_boton(txtId, lblConsulta):
+        id_estudiante = txtId.get()
+        if not id_estudiante.isdigit():
+            lblConsulta.config(text="Por favor ingrese un ID válido.")
+            return
+
+        resultado = Peticiones.consultar(id_estudiante)
+        
+        if resultado and 'estudiante' in resultado:
+            lblConsulta.config(text=f"Estudiante: {resultado['estudiante']}")
+        else:
+            lblConsulta.config(text="No se encontraron resultados")
+
+
+    @staticmethod
+    def buscar(datos):
+        try:
+            url = 'http://127.0.0.1:8000/v1/universidad?'
+            for key, value in datos.items():
+                if value:
+                    url += f"{key}={value}&"
+            
+            resultado = requests.get(url)
+            resultado.raise_for_status()
+            return resultado.json()
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+            return None
+        
 

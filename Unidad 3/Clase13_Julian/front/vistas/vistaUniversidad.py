@@ -7,6 +7,8 @@ sys.path.append("Controladores")
 from controladores.validaciones import Validaciones
 from controladores.peticiones import Peticiones
 from controladores.validaciones import Validaciones
+from functools import partial
+from tkinter import ttk
 
 
 validaciones = Validaciones()
@@ -50,10 +52,49 @@ def peticion_ingresar_universidad():
     except Exception as e:
         messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")'''
 
+class ResultadosVentana(tk.Toplevel):
+    def __init__(self, resultados):
+        super().__init__()
+        self.title('Resultados de Búsqueda')
+        
+        self.tabla = ttk.Treeview(self)
+        self.tabla["columns"]=("docente","estudiante","salon","local","id")
+        self.tabla.column("#0", width=0, stretch=tk.NO)
+        self.tabla.column("docente", width=100)
+        self.tabla.column("estudiante", width=100)
+        self.tabla.column("salon", width=100)
+        self.tabla.column("local", width=100)
+        self.tabla.column("id", width=50)
+        
+        self.tabla.heading("docente", text="Docente")
+        self.tabla.heading("estudiante", text="Estudiante")
+        self.tabla.heading("salon", text="Salón")
+        self.tabla.heading("local", text="Local")
+        self.tabla.heading("id", text="ID")
+        
+        for resultado in resultados:
+            self.tabla.insert("", 'end', text="", values=(resultado['docente'], resultado['estudiante'], resultado['salon'], resultado['local'], resultado['id']))
+        
+        self.tabla.pack(expand=True, fill="both")
+
+
+def accion_buscar_boton(txtDocente, txtEstudiante, txtSalon, txtLocal, txtId):
+    datos = {
+        "docente": txtDocente.get(),
+        "estudiante": txtEstudiante.get(),
+        "salon": txtSalon.get(),
+        "local": txtLocal.get(),
+        "id": txtId.get()
+    }
+    resultados = Peticiones.buscar(datos)
+    if resultados:
+        ResultadosVentana(resultados)
+    else:
+        messagebox.showinfo("Información", "No se encontraron resultados.")
 
 principal = tk.Tk()
 principal.title('Universidad')
-principal.geometry("290x220")
+principal.geometry("290x310")
 
 frame = tk.Frame(principal, padx=10, pady=10)
 frame.pack(padx=10, pady=10)
@@ -97,7 +138,22 @@ txtLocal.lblAdvertencia.grid(row=8, column=1, sticky="w")
 txtLocal.lblAdvertencia.grid_remove()
 
 btnIngresar = tk.Button(frame, text='Ingresar', command=peticion_ingresar_universidad)
-btnIngresar.grid(row=9, column=1, columnspan=2)
+btnIngresar.grid(row=12, column=1, columnspan=2)
+
+
+lblId = tk.Label(frame, text='ID:')
+lblId.grid(row=9, column=0, padx=5, pady=5)
+
+txtId = tk.Entry(frame, width=20)
+txtId.grid(row=9, column=1, padx=5, pady=5)
+
+btnConsultar = tk.Button(frame, text='Consultar', command=partial(Peticiones.accion_consultar_boton, txtId, lblConsulta))
+btnConsultar.grid(row=13, column=1, columnspan=2)
+
+
+btnConsultarTodos = tk.Button(frame, text='Consultar Todos', command=partial(accion_buscar_boton, txtDocente, txtEstudiante, txtSalon, txtLocal, txtId))
+btnConsultarTodos.grid(row=14, column=1, columnspan=2)
+
 
 
 txtDocente.bind('<KeyRelease>', Validaciones.mostrar_advertencia)

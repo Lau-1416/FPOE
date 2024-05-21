@@ -6,9 +6,26 @@ from rest_framework import status
 from django.http import Http404
 
 class UniversidadAPIView(APIView):
-    def get(self, request, format=None):
+    def get(self, request, format=None,*args, **kwargs):
         print("DEBUG: Entrando en el método GET de UniversidadAPIView")
         universidades = Universidad.objects.all()
+        # Filtrar por parámetros de consulta si están presentes
+        docente = request.query_params.get('docente', None)
+        estudiante = request.query_params.get('estudiante', None)
+        salon = request.query_params.get('salon', None)
+        local = request.query_params.get('local', None)
+        id = request.query_params.get('id', None)
+
+        if docente:
+            universidades = universidades.filter(docente__icontains=docente)
+        if estudiante:
+            universidades = universidades.filter(estudiante__icontains=estudiante)
+        if salon:
+            universidades = universidades.filter(salon__icontains=salon)
+        if local:
+            universidades = universidades.filter(local__icontains=local)
+        if id:
+            universidades = universidades.filter(id=id)
         serializer = UniversidadSerializer(universidades, many=True)
         print("DEBUG: Data serializada:", serializer.data)
         return Response(serializer.data)
