@@ -17,29 +17,40 @@ def interfaz():
     tabla = Tabla(ventana_principal, titulos, columnas, data)
     pass
         
-def Comunicacion_ConsultaBoton(txtMarca, txtTamaño, txtColor, txtPrecio , txtId):
-    resultado = Comunicacion.ConsultaBoton(id)
+def Comunicacion_ConsultaBoton(lblConsultaPrecio, id):
+    resultado = Comunicacion.consultar(id)
     print(resultado)
     print(type(resultado))
-    lblMarca.config(text = resultado.get('marca'))
-    lblTamaño.config(text = resultado.get('tamaño'))
-    lblColor.config(text = resultado.get('color'))
-    lblPrecio.config(text = resultado.get('precio'))
-    lblId.config(text = resultado.get('id'))
+    lblConsultaPrecio.config(text = resultado.get())
     
-def Comunicacion_ConsultarTodo( txtMarca, txtTamaño, txtColor, txtPrecio, txtId):
-    datos = {
-        "docente": txtMarca.get(),
-        "estudiante": txtTamaño.get(),
-        "salon": txtColor.get(),
-        "local": txtPrecio.get(),
-        "id": txtId.get()
-            }
-    resultados = Comunicacion.ConsultarTodo()
-    if resultados:
-        print(resultados)
-    else:
-        messagebox.showinfo("Información", "No se encontraron resultados.")
+def Comunicacion_ConsultarTodo(self, marca, tamaño, color, precio):
+    resultado = self.Comunicacion.ConsultarTodo(marca, tamaño, color, precio) 
+    data = [] 
+    for elemento in resultado: 
+        data.append((elemento.get('id'), elemento.get('marca'), elemento.get('tamaño'), elemento.get('color'), elemento.get('precio'))) 
+    self.tabla.refrescar(data)
+    print(resultado)
+    print(type(resultado))
+    Comunicacion.ConsultarTodo(text = resultado.get())
+    
+'''def seleccionar_elemento(_):
+    for i in tabla.tabla.selection():
+        valores = tabla.tabla.item(i)['values']
+        entryId.delete(0, tk.END)
+        entryId.insert(0, str(valores[0]))
+        entryTema.delete(0, tk.END)
+        entryTema.insert(0, str(valores[1]))
+        entryDescripcion.delete(0, tk.END)
+        entryDescripcion.insert(0, str(valores[2]))
+        entryNumero.delete(0, tk.END)
+        entryNumero.insert(0, str(valores[3]))
+
+def borrar_elemento(_):
+    for i in self.tabla.tabla.selection():
+        self.comunicacion.eliminar(self.tabla.tabla.item(i)['values'][0])
+        self.tabla.tabla.delete(i)'''
+
+    
         
 def Peticion_ingresar_bafle():
     Peticiones.ingresar_bafle(txtMarca, txtTamaño, txtColor, txtPrecio)
@@ -110,22 +121,16 @@ txtColor.bind('<KeyRelease>', Validaciones.Advertencia3)
 txtPrecio.bind('<KeyRelease>', Validaciones.Advertencia4)
 
 
-
-
 btnIngresar = tk.Button(frame, text='Ingresar', command=Peticion_ingresar_bafle)
 btnIngresar.grid(row=10, column=1, columnspan=2)
-
 
 
 btnConsultas = tk.Button(frame, text='Consultar', command=Comunicacion_ConsultaBoton)
 btnConsultas.grid(row=14, column=1, columnspan=2)
 
 
-
 btnConsultartodo = tk.Button(frame, text='Consultar Todo', command=partial(Comunicacion_ConsultarTodo, txtMarca, txtTamaño, txtColor, txtPrecio, txtId))
 btnConsultartodo.grid(row=16, column=1, columnspan=2)
-
-
 
 
 ventana_principal.mainloop()
