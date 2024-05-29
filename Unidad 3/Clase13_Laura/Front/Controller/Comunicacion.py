@@ -2,7 +2,7 @@ import requests
 
 class Comunicacion():
 
-    def __init__(self, ventana_principal):
+    def __init__(self):
         self.url = 'http://127.0.0.1:8000/v1/bafle'
 
     def consultar(self, id):
@@ -16,7 +16,10 @@ class Comunicacion():
             url = url + 'precio=' + str(precio) + "&"
         if marca != '':
             url = url + 'marca=' + str(marca) + "&"
-        print(url)
+        if tamaño != '':
+            url = url + 'tamaño=' + str(tamaño) + "&"  
+        if color != '':
+            url = url + 'color=' + str(color) + "&"   
         resultado = requests.get(url)
         return resultado.json()
 

@@ -1,5 +1,6 @@
-from Front.Views import VistasBafle
+from Front.Views.VistasBafle import VistasBafle
 
 if __name__ == '__main__':
-    VistasBafle
+    vistasBafle = VistasBafle()
+    vistasBafle.ver_interfaz()
     
