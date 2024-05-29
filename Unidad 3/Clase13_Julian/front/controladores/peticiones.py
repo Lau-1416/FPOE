@@ -8,6 +8,7 @@ sys.path.append("controladores")
 from controladores.validaciones import Validaciones'''
 from .validaciones import Validaciones
 from vistas import vistaUniversidad
+import threading
 
 import requests
 from tkinter import messagebox
@@ -120,3 +121,24 @@ class Peticiones():
             return None
         
 
+    @staticmethod
+    def guardar_universidades_en_archivo():
+        try:
+            resultado = requests.get(Peticiones.url_base)
+            resultado.raise_for_status()
+            universidades = resultado.json()
+
+            with open('universidades.txt', 'w', encoding='utf-8') as archivo:
+                for universidad in universidades:
+                    linea = f"ID: {universidad['id']}, Docente: {universidad['docente']}, Estudiante: {universidad['estudiante']}, Salón: {universidad['salon']}, Local: {universidad['local']}\n"
+                    archivo.write(linea)
+            messagebox.showinfo("Éxito", "Universidades guardadas exitosamente en universidades.txt.")
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al guardar el archivo: {str(e)}")
+
+    @staticmethod
+    def guardar_universidades_en_archivo_hilo():
+        hilo = threading.Thread(target=Peticiones.guardar_universidades_en_archivo)
+        hilo.start()

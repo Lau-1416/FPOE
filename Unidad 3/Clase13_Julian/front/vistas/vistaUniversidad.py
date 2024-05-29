@@ -68,12 +68,14 @@ def mostrarInterfaz():
         messagebox.showinfo("Éxito", "Universidad actualizada exitosamente.")
         limpiar_campos()  # Limpiar los campos después de actualizar
         actualizar_tabla()  # Actualizar la tabla después de la actualización
+        Peticiones.guardar_universidades_en_archivo()
 
     def ingresar_universidad():
         Peticiones.ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal)
         #messagebox.showinfo("Éxito", "Nueva universidad ingresada exitosamente.")
         limpiar_campos()  # Limpiar los campos después de ingresar
         actualizar_tabla()  # Actualizar la tabla después de la inserción
+        Peticiones.guardar_universidades_en_archivo()
 
     def limpiar_campos():
         txtDocente.delete(0, tk.END)
