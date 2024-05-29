@@ -19,7 +19,8 @@ class Comunicacion():
         if tamaño != '':
             url = url + 'tamaño=' + str(tamaño) + "&"  
         if color != '':
-            url = url + 'color=' + str(color) + "&"   
+            url = url + 'color=' + str(color) + "&"
+        print(url)   
         resultado = requests.get(url)
         return resultado.json()
 
