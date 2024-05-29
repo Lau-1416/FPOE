@@ -50,9 +50,29 @@ def mostrarInterfaz():
 
     
 
-    # Funcion para la peticion de ingresar universidad
     def peticion_ingresar_universidad():
-        Peticiones.ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal)
+        id_seleccionado = obtener_id_seleccionado()  
+        if id_seleccionado:
+            confirmacion = messagebox.askyesno("Confirmar Actualización", "¿Estás seguro de que deseas actualizar esta universidad?")
+            if confirmacion:
+                actualizar_universidad(id_seleccionado)
+            else:
+                ingresar_universidad()
+
+    def obtener_id_seleccionado():
+        id_seleccionado = None
+        for i in tabla.tabla.selection():
+            id_seleccionado = tabla.tabla.item(i)['values'][0]
+            break  # Solo necesitamos el ID de la primera fila seleccionada
+        return id_seleccionado
+
+    def actualizar_universidad(id_universidad):
+        Peticiones.actualizar(id_universidad, txtDocente.get(), txtEstudiante.get(), txtSalon.get(), txtLocal.get())
+        messagebox.showinfo("Éxito", "Universidad actualizada exitosamente.")
+
+    def ingresar_universidad():
+        Peticiones.ingresar_o_actualizar(txtDocente.get(), txtEstudiante.get(), txtSalon.get(), txtLocal.get())
+        messagebox.showinfo("Éxito", "Nueva universidad ingresada exitosamente.")
 
     # Funcion para el boton de buscar
     def accion_buscar_boton(txtDocente, txtEstudiante, txtSalon, txtLocal, txtId, tabla):
