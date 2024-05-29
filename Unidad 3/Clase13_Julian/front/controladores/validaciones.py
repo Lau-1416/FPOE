@@ -8,8 +8,7 @@ import re
 class Validaciones():
     def __init__(self):
         pass
-       
-        
+            
     def validar_entrada(entrada):
         if not entrada or re.match("^[a-zA-Z ]*$", entrada):
             return True
@@ -39,9 +38,11 @@ class Validaciones():
         else:
             event.widget.lblAdvertencia.grid_remove() 
 
+    @staticmethod
     def mostrar_advertencia_local(event):
-        nuevoValor = event.widget.get()
+        entry = event.widget
+        nuevoValor = entry.get()
         if not re.match("^[a-zA-Z0-9 ]*$", nuevoValor):
-            vistaUniversidad.txtLocal.lblAdvertencia.grid(row=8, column=1) 
+            entry.lblAdvertencia.grid(row=8, column=1)
         else:
-            vistaUniversidad.txtLocal.lblAdvertencia.grid_remove() 
+            entry.lblAdvertencia.grid_remove()

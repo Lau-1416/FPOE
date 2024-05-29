@@ -13,6 +13,7 @@ import requests
 from tkinter import messagebox
 
 class Peticiones():
+    url_base = 'http://127.0.0.1:8000/v1/universidad'
     @staticmethod
     def ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal):
         docente = txtDocente.get()
@@ -48,6 +49,22 @@ class Peticiones():
                 messagebox.showerror("Error", f"Error al crear universidad: {response.text}")
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+
+    @staticmethod
+    def actualizar(id, docente, estudiante, salon, local):
+        try:
+            data = {
+                'docente': docente,
+                'estudiante': estudiante,
+                'salon': salon,
+                'local': local
+            }
+            url = f'http://127.0.0.1:8000/v1/universidad/{id}/'
+            resultado = requests.put(url, json=data)
+            return resultado.status_code
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+            return None
   
     @staticmethod
     def consultar(id):
@@ -85,6 +102,19 @@ class Peticiones():
             resultado = requests.get(url)
             resultado.raise_for_status()
             return resultado.json()
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+            return None
+        
+    @staticmethod
+    def eliminar(id):
+        try:
+            url = f"{Peticiones.url_base}/{id}"
+            resultado = requests.delete(url)
+            if resultado.status_code == 204:
+                return 200  # Cambiamos el código de estado a 200 cuando la eliminación es exitosa
+            else:
+                return resultado.status_code
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
             return None
