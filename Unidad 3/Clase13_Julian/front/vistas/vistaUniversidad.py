@@ -174,8 +174,8 @@ def mostrarInterfaz():
     btnConsultarTodos = tk.Button(frame, text='Consultar Todos', command=partial(accion_buscar_boton, txtDocente, txtEstudiante, txtSalon, txtLocal, txtId, tabla))
     btnConsultarTodos.grid(row=14, column=1, columnspan=2)
 
-    boton_actualizar = tk.Button(principal, text="Actualizar", command=actualizar_tabla)
-    boton_actualizar.pack(pady=10)
+    boton_actualizar = tk.Button(frame, text="Actualizar", command=actualizar_tabla)
+    boton_actualizar.grid(row=15, column=1, columnspan=2)
 
     #Mostrar la tabla
     tabla.tabla.pack(fill=tk.BOTH, expand=True)
