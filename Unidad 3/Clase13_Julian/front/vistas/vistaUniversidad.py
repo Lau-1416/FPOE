@@ -45,19 +45,16 @@ def mostrarInterfaz():
                 ))
             tabla.refrescar(data)
 
-    # Botón para actualizar la tabla
-    
-
     
 
     def peticion_ingresar_universidad():
-        id_seleccionado = obtener_id_seleccionado()  
+        id_seleccionado = obtener_id_seleccionado()
         if id_seleccionado:
             confirmacion = messagebox.askyesno("Confirmar Actualización", "¿Estás seguro de que deseas actualizar esta universidad?")
             if confirmacion:
                 actualizar_universidad(id_seleccionado)
-            else:
-                ingresar_universidad()
+        else:
+            ingresar_universidad()
 
     def obtener_id_seleccionado():
         id_seleccionado = None
@@ -69,10 +66,21 @@ def mostrarInterfaz():
     def actualizar_universidad(id_universidad):
         Peticiones.actualizar(id_universidad, txtDocente.get(), txtEstudiante.get(), txtSalon.get(), txtLocal.get())
         messagebox.showinfo("Éxito", "Universidad actualizada exitosamente.")
+        limpiar_campos()  # Limpiar los campos después de actualizar
+        actualizar_tabla()  # Actualizar la tabla después de la actualización
 
     def ingresar_universidad():
-        Peticiones.ingresar_o_actualizar(txtDocente.get(), txtEstudiante.get(), txtSalon.get(), txtLocal.get())
-        messagebox.showinfo("Éxito", "Nueva universidad ingresada exitosamente.")
+        Peticiones.ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal)
+        #messagebox.showinfo("Éxito", "Nueva universidad ingresada exitosamente.")
+        limpiar_campos()  # Limpiar los campos después de ingresar
+        actualizar_tabla()  # Actualizar la tabla después de la inserción
+
+    def limpiar_campos():
+        txtDocente.delete(0, tk.END)
+        txtEstudiante.delete(0, tk.END)
+        txtSalon.delete(0, tk.END)
+        txtLocal.delete(0, tk.END)
+        txtId.delete(0, tk.END)
 
     # Funcion para el boton de buscar
     def accion_buscar_boton(txtDocente, txtEstudiante, txtSalon, txtLocal, txtId, tabla):
