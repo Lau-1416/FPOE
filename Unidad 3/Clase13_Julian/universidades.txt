@@ -1,0 +1,14 @@
+ID: 1, Docente: Cesar, Estudiante: Ame, Salón: A1, Local: Calle#24
+ID: 2, Docente: Julian, Estudiante: Julian, Salón: 12, Local: Calle24
+ID: 3, Docente: Raul, Estudiante: Julian, Salón: 7, Local: Carrera23
+ID: 4, Docente: Raul, Estudiante: Julian, Salón: 12, Local: Calle50
+ID: 5, Docente: Raul, Estudiante: Julian, Salón: 6, Local: Calle89
+ID: 6, Docente: Raul, Estudiante: Julian, Salón: 1A, Local: Cra12
+ID: 13, Docente: Raul, Estudiante: Yuliana, Salón: 23, Local: 23
+ID: 14, Docente: Raul, Estudiante: Yuliana, Salón: 23, Local: 23
+ID: 15, Docente: Raul, Estudiante: Ame, Salón: 23, Local: 23
+ID: 16, Docente: Ame, Estudiante: Ame, Salón: 24, Local: 24
+ID: 17, Docente: Cesar, Estudiante: Julian, Salón: 57, Local: 57
+ID: 18, Docente: Ame, Estudiante: Ame, Salón: 23, Local: 23
+ID: 20, Docente: Ame, Estudiante: Ame, Salón: 24, Local: 24
+ID: 21, Docente: Ame, Estudiante: Ame, Salón: 1, Local: 1
