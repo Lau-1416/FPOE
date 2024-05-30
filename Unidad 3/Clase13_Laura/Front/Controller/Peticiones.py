@@ -11,6 +11,7 @@ import requests
 from tkinter import messagebox
 
 class Peticiones():
+    url_base  = 'http://127.0.0.1:8000/v1/bafle'
     @staticmethod
     def ingresar_bafle(txtMarca, txtTamaño, txtColor, txtPrecio):
         marca = txtMarca.get()
