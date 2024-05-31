@@ -87,5 +87,21 @@ class Peticiones():
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
             return None
-        
 
+    @staticmethod 
+    def actualizar(id, marca, tamaño, color, precio):
+        try:
+            data = {
+                'marca': marca,
+                'tamaño': tamaño,
+                'color': color,
+                'precio': precio
+            }
+            url = f'http://127.0.0.1:8000/v1/bafle/{id}/'
+            resultado = requests.put(url, json=data)
+            return resultado.status_code
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+            return None
+  
+  

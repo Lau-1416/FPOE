@@ -30,21 +30,35 @@ class VistasBafle():
             self.Comunicacion.guardar(entryId, entryMarca, entryTamaño, entryColor, entryPrecio)
         else:
             messagebox.showwarning("Espera!", "Por favor llene los campos")
+
+    def Bafle_update(id_bafle):
+        Peticiones.actualizar(id_bafle, entryMarca.get(), txtEstudiante.get(), txtSalon.get(), txtLocal.get())
+        messagebox.showinfo("Éxito", "Universidad actualizada exitosamente.")
+        limpiar_campos()  # Limpiar los campos después de actualizar
+        actualizar_tabla()  # Actualizar la tabla después de la actualización
+        Peticiones.guardar_universidades_en_archivo()
             
-    def Actualizar(self, id, marca, tamaño, color, precio):
-        if id == '':
-            self.Comunicacion.guardar(marca, tamaño, color, precio)
-        else:
-            self.Comunicacion.actualizar(id, marca, tamaño, color, precio)
-            self.limpiar_cajas()
-            self.ConsultarTodo(self.entryMarca.get(),self.entryTamaño.get(), self.entryColor.get(), self.entryPrecio.get())
+    def Actualizar(self):
+        Busqueda = {}  
+        resultado = Peticiones.Buscar(Busqueda)
+        if resultado is not None:
+            data = []
+            for elemento in resultado:
+                data.append((
+                    elemento.get('id'),
+                    elemento.get('marca'),
+                    elemento.get('tamaño'),
+                    elemento.get('color'),
+                    elemento.get('local')
+                ))
+            self.tabla.refrescar(data)
 
     def limpiar_cajas(self):
-        self.entryMarca.delete(0,tk.END)
-        self.entryTamaño.delete(0,tk.END)
-        self.entryColor.delete(0,tk.END)
-        self.entryPrecio.delete(0,tk.END)
-        self.entryId.delete(0,tk.END)
+        self.txtMarca.delete(0,tk.END)
+        self.txtTamaño.delete(0,tk.END)
+        self.txtColor.delete(0,tk.END)
+        self.txtPrecio.delete(0,tk.END)
+        self.txtId.delete(0,tk.END)
 
     def ConsultarTodo(self, marca, tamaño, color, precio):
         resultado = self.Comunicacion.ConsultarTodo(marca, tamaño, color, precio)
