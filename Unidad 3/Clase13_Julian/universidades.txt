@@ -10,5 +10,4 @@ ID: 15, Docente: Raul, Estudiante: Ame, Salón: 23, Local: 23
 ID: 16, Docente: Ame, Estudiante: Ame, Salón: 24, Local: 24
 ID: 17, Docente: Cesar, Estudiante: Julian, Salón: 57, Local: 57
 ID: 18, Docente: Ame, Estudiante: Ame, Salón: 23, Local: 23
-ID: 20, Docente: Ame, Estudiante: Ame, Salón: 24, Local: 24
-ID: 21, Docente: Ame, Estudiante: Ame, Salón: 1, Local: 1
+ID: 20, Docente: Ame, Estudiante: Ame, Salón: 23, Local: 24

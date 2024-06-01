@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from api.models.Universidad import Universidad
+from api.models.Clientes import Cliente
 from ..serializers.universidad_serializer import UniversidadSerializer
 from rest_framework import status
 from django.http import Http404
@@ -8,7 +8,7 @@ from django.http import Http404
 class UniversidadAPIView(APIView):
     def get(self, request, format=None):
         print("DEBUG: Entrando en el método GET de UniversidadAPIView")
-        universidades = Universidad.objects.all()
+        universidades = Cliente.objects.all()
         serializer = UniversidadSerializer(universidades, many=True)
         print("DEBUG: Data serializada:", serializer.data)
         return Response(serializer.data)
@@ -26,8 +26,8 @@ class UniversidadAPIView(APIView):
 class UniversidadDetailAPIView(APIView):
     def get_object(self, pk):
         try:
-            return Universidad.objects.get(pk=pk)
-        except Universidad.DoesNotExist:
+            return Cliente.objects.get(pk=pk)
+        except Cliente.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):

@@ -138,7 +138,7 @@ class Peticiones():
         except Exception as e:
             messagebox.showerror("Error", f"Error al guardar el archivo: {str(e)}")
 
-    @staticmethod
+    '''@staticmethod
     def guardar_universidades_en_archivo_hilo():
         hilo = threading.Thread(target=Peticiones.guardar_universidades_en_archivo)
-        hilo.start()
+        hilo.start()'''

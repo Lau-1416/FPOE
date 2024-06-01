@@ -20,14 +20,13 @@ def mostrarInterfaz():
     columnas = ['id', 'docente', 'estudiante', 'salon', 'local']
     data = []
 
-    # Crear la ventana principal
-    principal = tk.Tk()
-    principal.title("Vista Universidad")
-    principal.geometry("1000x800")
-
-    # Crear la instancia de Peticiones y Tabla
-    peticiones = Peticiones()
-    tabla = Tabla(principal, titulos, columnas, data)
+    def limpiar_campos():
+        # Establecer todos los campos de entrada a una cadena vacía
+        txtDocente.delete(0, tk.END)
+        txtEstudiante.delete(0, tk.END)
+        txtSalon.delete(0, tk.END)
+        txtLocal.delete(0, tk.END)
+        txtId.delete(0, tk.END)  # Si también deseas limpiar este campo
 
     def actualizar_tabla():
         # Obtener los datos de la API y actualizar la tabla
@@ -44,6 +43,18 @@ def mostrarInterfaz():
                     elemento.get('local')
                 ))
             tabla.refrescar(data)
+
+    # Crear la ventana principal
+    principal = tk.Tk()
+    principal.title("Vista Universidad")
+    principal.geometry("1000x800")
+
+    # Crear la instancia de Peticiones y Tabla
+    peticiones = Peticiones()
+    tabla = Tabla(principal, titulos, columnas, data)
+    actualizar_tabla()
+
+
 
     
 
@@ -68,14 +79,14 @@ def mostrarInterfaz():
         messagebox.showinfo("Éxito", "Universidad actualizada exitosamente.")
         limpiar_campos()  # Limpiar los campos después de actualizar
         actualizar_tabla()  # Actualizar la tabla después de la actualización
-        Peticiones.guardar_universidades_en_archivo()
+        #Peticiones.guardar_universidades_en_archivo()
 
     def ingresar_universidad():
         Peticiones.ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal)
         #messagebox.showinfo("Éxito", "Nueva universidad ingresada exitosamente.")
         limpiar_campos()  # Limpiar los campos después de ingresar
         actualizar_tabla()  # Actualizar la tabla después de la inserción
-        Peticiones.guardar_universidades_en_archivo()
+        #Peticiones.guardar_universidades_en_archivo()
 
     def limpiar_campos():
         txtDocente.delete(0, tk.END)
@@ -186,6 +197,9 @@ def mostrarInterfaz():
 
     boton_actualizar = tk.Button(frame, text="Actualizar", command=actualizar_tabla)
     boton_actualizar.grid(row=15, column=1, columnspan=2)
+
+    btnLimpiar = tk.Button(frame, text='Limpiar Campos', command=limpiar_campos)
+    btnLimpiar.grid(row=16, column=1, columnspan=2)
 
     #Mostrar la tabla
     tabla.tabla.pack(fill=tk.BOTH, expand=True)

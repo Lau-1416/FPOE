@@ -1,20 +1,21 @@
-import psycopg2
+import mysql.connector
 
-def get_students():
-    conn = psycopg2.connect(
-        dbname="Universidad",
-        user="your_username",
-        password="your_password",
-        host="localhost"
+def consultar_estudiantes():
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='1234567',
+        database='universidad'
     )
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM students')
-    students = cursor.fetchall()
-    cursor.close()
+    cursor.execute('SELECT * FROM estudiantes')
+    estudiantes = cursor.fetchall()
     conn.close()
-    return students
+    return estudiantes
 
 # Ejemplo de uso
-students = get_students()
-for student in students:
-    print(student)
+estudiantes = consultar_estudiantes()
+print("Código | Nombre      | Apellido   | Carrera")
+print("---------------------------------------------")
+for estudiante in estudiantes:
+    print(f"{estudiante[0]:<6} | {estudiante[1]:<10} | {estudiante[2]:<10} | {estudiante[3]}")

@@ -1,17 +1,16 @@
-import psycopg2
+import mysql.connector
 
-def delete_student(student_id):
-    conn = psycopg2.connect(
-        dbname="Universidad",
-        user="your_username",
-        password="your_password",
-        host="localhost"
+def borrar_estudiante(codigo):
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='1234567',
+        database='universidad'
     )
     cursor = conn.cursor()
-    cursor.execute('DELETE FROM students WHERE id = %s', (student_id,))
+    cursor.execute('DELETE FROM estudiantes WHERE codigo = %s', (codigo,))
     conn.commit()
-    cursor.close()
     conn.close()
 
 # Ejemplo de uso
-delete_student(1)
+borrar_estudiante(1)

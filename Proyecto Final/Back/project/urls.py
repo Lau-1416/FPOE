@@ -16,7 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from project.views import cliente_view
+from project.views import servicio_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('v1/servicio', servicio_view.ServicioAPIView.as_view()),
+    path('v1/servicio/<int:pk>/', servicio_view.ServicioDetailAPIView.as_view()),
+    path('v2/cliente', cliente_view.ClienteAPIView.as_view()),
+    path('v2/cliente/<int:pk>/', cliente_view.ClienteDetailAPIView.as_view()),
 ]

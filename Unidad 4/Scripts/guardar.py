@@ -1,20 +1,19 @@
-import psycopg2
+import mysql.connector
 
-def insert_student(nombre, apellido, carrera, codigo):
-    conn = psycopg2.connect(
-        dbname="Universidad",
-        user="your_username",
-        password="your_password",
-        host="localhost"
+def insertar_estudiante(nombre, apellido, carrera):
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='password',
+        database='universidad'
     )
     cursor = conn.cursor()
     cursor.execute('''
-    INSERT INTO students (nombre, apellido, carrera, codigo)
-    VALUES (%s, %s, %s, %s)
-    ''', (nombre, apellido, carrera, codigo))
+    INSERT INTO estudiantes (nombre, apellido, carrera)
+    VALUES (%s, %s, %s)
+    ''', (nombre, apellido, carrera))
     conn.commit()
-    cursor.close()
     conn.close()
 
-#ENSAYO DE GUARDADO
-insert_student('Julian', 'Tabares', 'Software', '2156028-2724')
+# Ejemplo de uso
+insertar_estudiante('Juan', 'Perez', 'Ingenieria')

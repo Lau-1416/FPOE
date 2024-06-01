@@ -1,21 +1,20 @@
-import psycopg2
+import mysql.connector
 
-def update_student(student_id, nombre, apellido, carrera, codigo):
-    conn = psycopg2.connect(
-        dbname="Universidad",
-        user="your_username",
-        password="your_password",
-        host="localhost"
+def actualizar_estudiante(codigo, nombre, apellido, carrera):
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='1234567',
+        database='universidad'
     )
     cursor = conn.cursor()
     cursor.execute('''
-    UPDATE students
-    SET nombre = %s, apellido = %s, carrera = %s, codigo = %s
-    WHERE id = %s
-    ''', (nombre, apellido, carrera, codigo, student_id))
+    UPDATE estudiantes
+    SET nombre = %s, apellido = %s, carrera = %s
+    WHERE codigo = %s
+    ''', (nombre, apellido, carrera, codigo))
     conn.commit()
-    cursor.close()
     conn.close()
 
 # Ejemplo de uso
-update_student(1, 'Maria', 'Lopez', 'Medicina', '54321')
+actualizar_estudiante(1, 'Juan', 'Gomez', 'Arquitectura')

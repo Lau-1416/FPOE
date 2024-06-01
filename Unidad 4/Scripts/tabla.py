@@ -1,32 +1,23 @@
-import psycopg2
+import mysql.connector
 
-def crearTabla():
-    # Conexión a la base de datos
-    conn = psycopg2.connect(
-        dbname="universidad",
-        user="ame",
-        password="1234567",
-        host="localhost"
+def crear_tabla():
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='root',
+        password='1234567',
+        database='universidad'
     )
     cursor = conn.cursor()
-
-    # Crear la tabla
     cursor.execute('''
-    CREATE TABLE students (
-        id SERIAL PRIMARY KEY,
-        nombre VARCHAR(100) NOT NULL,
-        apellido VARCHAR(100) NOT NULL,
-        carrera VARCHAR(100) NOT NULL,
-        codigo VARCHAR(50) NOT NULL
+    CREATE TABLE IF NOT EXISTS estudiantes (
+        codigo INT AUTO_INCREMENT PRIMARY KEY,
+        nombre VARCHAR(255) NOT NULL,
+        apellido VARCHAR(255) NOT NULL,
+        carrera VARCHAR(255) NOT NULL
     )
     ''')
-
-    #Confirmar la transacción
     conn.commit()
-
-    #Cerrar la conexión
-    cursor.close()
     conn.close()
 
-#Ejecutar el script
-crearTabla()
+# Ejecutar la función para crear la tabla
+crear_tabla()
