@@ -103,5 +103,22 @@ class Peticiones():
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
             return None
-  
+    
+    @staticmethod
+    def GuardarBafle_Archivo():
+        try:
+            resultado = requests.get(Peticiones.url_base)
+            resultado.raise_for_status()
+            bafles = resultado.json()
+
+            with open('bafle.txt', 'w', encoding='utf-8') as archivo:
+                for bafle in bafles:
+                    linea = f"ID: {bafle['id']}, Marca: {bafle['marca']}, Tamaño: {bafle['tamaño']}, Color: {bafle['color']}, Precio: {bafle['precio']}\n"
+                    archivo.write(linea)
+            messagebox.showinfo("Éxito", "Bafle guardado exitosamente en bafle.txt.")
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al guardar el archivo: {str(e)}")
+
   
