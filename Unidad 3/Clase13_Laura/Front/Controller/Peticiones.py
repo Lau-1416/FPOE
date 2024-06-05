@@ -58,20 +58,6 @@ class Peticiones():
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
             return None
 
-    @staticmethod
-    def ConsultarBoton(txtId, lblConsulta):
-        id_marca = txtId.get()
-        if not id_marca.isdigit():
-            lblConsulta.config(text="Por favor ingrese un ID válido.")
-            return
-
-        resultado = Peticiones.consultar(id_marca)
-        
-        if resultado and 'marca' in resultado:
-            lblConsulta.config(text=f"marca: {resultado['marca']}")
-        else:
-            lblConsulta.config(text="No se encontraron resultados")
-
 
     @staticmethod
     def Buscar(datos):

@@ -17,7 +17,7 @@ class VistasBafle():
         self.Comunicacion = Comunicacion()
         self.Validaciones = Validaciones()
         self.tabla = Tabla(self.frame, titulos, columnas, data)
-        Peticiones = Peticiones()
+        self.Peticiones = Peticiones()
         self.Actualizar()
     
     def ValidarEntrada(self, valor, etiquetaerror):
@@ -27,15 +27,9 @@ class VistasBafle():
         else:
             etiquetaerror.config(text="")
             
-    def BotonGuardar(self, entryId, entryMarca, entryTamaño, entryColor, entryPrecio):
-        if id == '':
-            self.Comunicacion.guardar(entryId, entryMarca, entryTamaño, entryColor, entryPrecio)
-        else:
-            messagebox.showwarning("Espera!", "Por favor llene los campos")
-
     def Bafle_update(self, id_bafle):
         Peticiones.actualizar(id_bafle, self.txtMarca.get(), self.txtTamaño.get(), self.txtColor.get(), self.txtPrecio.get())
-        messagebox.showinfo("Éxito", "Universidad actualizada exitosamente.")
+        messagebox.showinfo("Éxito", "Bafle actualizado exitosamente.")
         self.limpiar_cajas()  
         self.actualizar_tabla()  
         Peticiones.GuardarBafle_Archivo()
@@ -56,22 +50,38 @@ class VistasBafle():
             self.tabla.refrescar(data)
 
     def limpiar_cajas(self):
-        self.entryId.delete(0,tk.END)
-        self.entryMarca.delete(0,tk.END)
-        self.entryTamaño.delete(0,tk.END)
-        self.entryColor.delete(0,tk.END)
-        self.entryPrecio.delete(0,tk.END)
+        self.txtId.delete(0,tk.END)
+        self.txtMarca.delete(0,tk.END)
+        self.txtTamaño.delete(0,tk.END)
+        self.txtColor.delete(0,tk.END)
+        self.txtPrecio.delete(0,tk.END)
         
     def BafleActualizado(self,id_bafle):
-        Peticiones.actualizar(id_bafle, self.entryMarca.get(), self.entryTamaño.get(), self.entryColor.get(), self.entryPrecio.get())
-        messagebox.showinfo("Éxito", "Universidad actualizada exitosamente.")
+        Peticiones.actualizar(id_bafle, self.txtMarca.get(), self.txtTamaño.get(), self.txtColor.get(), self.txtPrecio.get())
+        messagebox.showinfo("Éxito", "Bafle actualizada exitosamente.")
         self.limpiar_cajas()  
         self.Actualizar()  
 
     def IngresarBafle(self):
-        Peticiones.ingresar_universidad(self.txtMarca, self.txtTamaño, self.txtColor, self.txtPrecio)
+        Peticiones.ingresar_bafle(self.entryMarca, self.entryTamaño, self.entryColor, self.entrtytPrecio)
         self.limpiar_cajas()  
-        self.Actualizar() 
+        self.Actualizar()
+
+    def Peticion_ingresarBafle(self):
+        id_seleccionado = self.Idseleccionado()
+        if id_seleccionado:
+            confirmacion = messagebox.askyesno("Confirmar Actualización", "¿Estás seguro de que deseas actualizar este bafle?")
+            if confirmacion:
+                self.BafleActualizado(id_seleccionado)
+        else:
+            self.IngresarBafle()
+
+    def Idseleccionado(self):
+        id_seleccionado = None
+        for i in self.tabla.tabla.selection():
+            id_seleccionado = self.tabla.tabla.item(i)['values'][0]
+            break  
+        return id_seleccionado
 
     def ConsultarTodo(self, marca, tamaño, color, precio):
         resultado = self.Comunicacion.ConsultarTodo(marca, tamaño, color, precio)
@@ -81,19 +91,21 @@ class VistasBafle():
         self.tabla.refrescar(data)
         print(resultado)
         print(type(resultado))
-    
-    def ConsultarBoton1(self, lblConsultaMarca, lblConsultaTamaño, lblConsultaColor, lblConsultaPrecio, id):
-        resultado = self.Comunicacion.consultar(id)
-        print(resultado)
-        print(type(resultado))
-        lblConsultaMarca.config(text= resultado.get('marca'))
-        lblConsultaTamaño.config(text= resultado.get('tamaño'))
-        lblConsultaColor.config(text= resultado.get('color'))
-        lblConsultaPrecio.config(text= resultado.get('precio'))
 
-    def Peticion_IngresarBafle(self):
-        Peticiones.ingresar_bafle(self.txtMarca, self.txtTamaño, self.txtColor, self.txtPrecio)
-    
+    def BuscarBoton(txtMarca, txtTamaño, txtColor, txtPrecio, txtId, tabla):
+        datos = {
+            "marca": txtMarca.get(),
+            "tamaño": txtTamaño.get(),
+            "color": txtColor.get(),
+            "precio": txtPrecio.get(),
+            "id": txtId.get()
+        }
+        resultados = Peticiones.Buscar(datos)
+        if resultados is not None:
+            data = []
+            for elemento in resultados:
+                data.append((elemento.get('id'), elemento.get('marca'), elemento.get('tamaño'), elemento.get('color'), elemento.get('precio')))
+            tabla.refrescar(data)
 
     def ver_interfaz(self):
         bafle = Bafle(self.frame, id)
@@ -147,29 +159,24 @@ class VistasBafle():
         txtPrecio.lblAdvertencia4.grid(row=8, column=1, sticky="w")
         txtPrecio.lblAdvertencia4.grid_remove()
 
-        btnGuardar = tk.Button(self.frame, text='Guardar', command=lambda: self.BotonGuardar(entryId.get(), entryMarca.get(), entryTamaño.get(), entryColor.get(), entryPrecio.get()))
+        txtId=tk.Label(self.frame, width=20)
+        txtId.grid(row=9, column=1, padx=5, pady=5)
+
+        btnGuardar = tk.Button(self.frame, text='Guardar', command=lambda: self.Peticion_ingresarBafle())
         btnGuardar.grid(row=10, column=0)
 
-        btnConsultar1 = tk.Button(self.frame, text="Consulta 1", command=lambda: self.ConsultarBoton1(entryMarca.get(), entryTamaño.get(), entryColor.get(), entryPrecio.get(), entryId.get()))
-        btnConsultar1.grid(row=12, column=0)
-
         btnConsultaTodo = tk.Button(self.frame, text='Consulta de todo', command=lambda: self.ConsultarTodo(entryMarca.get(), entryTamaño.get(), entryColor.get(), entryPrecio.get()))
-        btnConsultaTodo.grid(row=14, column=0)
+        btnConsultaTodo.grid(row=12, column=0)
         
+        btnConsultar = tk.Button(self.frame, text="Consultar", command=partial(Peticiones.Buscar, txtId, txtMarca, txtTamaño, txtColor, txtPrecio ))
+        btnConsultar.grid(row=14, column=0)
+
         btnlimpiar = tk.Button(self.frame, text="Limpiar cajas", command=lambda: self.limpiar_cajas)
         btnlimpiar.grid(row=16, column=0)
         
-        btnActualizar = tk.Button(self.frame, text="Refrescar", command=lambda: self.Actualizar)
+        btnActualizar = tk.Button(self.frame, text="Refrescar", command=lambda: self.BafleActualizado())
         btnActualizar.grid(row=18, column=0)
         
-        lblConsultaMarca = tk.Label(self.frame, text='')
-        lblConsultaMarca.grid()
-        lblConsultaTamaño = tk.Label(self.frame, text='')
-        lblConsultaTamaño.grid()
-        lblConsultaColor = tk.Label(self.frame, text='')
-        lblConsultaColor.grid()
-        lblConsultaPrecio = tk.Label(self.frame, text='')
-        lblConsultaPrecio.grid()
 
         marca_error = tk.Label(self.frame, text="", fg="red")
         marca_error.place(x=260, y=20)
@@ -204,8 +211,13 @@ class VistasBafle():
                 
         def BorrarElemento(_):
             for i in self.tabla.tabla.selection():
-                self.Comunicacion.eliminar(self.tabla.tabla.item(i)['values'][0])
-                self.tabla.tabla.delete(i)
+                id = self.tabla.tabla.item(i)['values'][0]
+                print(f"Attempting to delete ID: {id}")  
+                status_code = Peticiones.eliminar(id)
+                if status_code == 200:
+                    self.tabla.tabla.delete(i)
+                else:
+                    messagebox.showerror("Error", f"Error al eliminar bafle con ID {id}")
 
         txtMarca.bind('<KeyRelease>', Validaciones.Advertencia1)
         txtTamaño.bind('<KeyRelease>', Validaciones.Advertencia2)
