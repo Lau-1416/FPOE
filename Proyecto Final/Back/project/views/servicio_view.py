@@ -5,29 +5,35 @@ from api.models.Servicios import Servicio
 from project.serializers.servicio_serializers import ServicioSerializers
 from rest_framework import status
 from django.http import Http404
+from api.models.Clientes import Cliente 
 
     
 class ServicioAPIView(APIView):
     def get(self, request, format=None,*args, **kwargs):
         print("DEBUG: Entrando en el método GET de ServicioAPIView")
         servicio = Servicio.objects.all()
-        '''# Filtrar por parámetros de consulta si están presentes
-        docente = request.query_params.get('docente', None)
-        estudiante = request.query_params.get('estudiante', None)
-        salon = request.query_params.get('salon', None)
-        local = request.query_params.get('local', None)
+        # Filtrar por parámetros de consulta si están presentes
+        # Filtrar por parámetros de consulta si están presentes
+        nombreServicio = request.query_params.get('nombreServicio', None)
+        cedulaCliente = request.query_params.get('cedulaCliente', None)
+        descripcion = request.query_params.get('descripcion', None)
+        valor = request.query_params.get('valor', None)
         id = request.query_params.get('id', None)
 
-        if docente:
-            universidades = universidades.filter(docente__icontains=docente)
-        if estudiante:
-            universidades = universidades.filter(estudiante__icontains=estudiante)
-        if salon:
-            universidades = universidades.filter(salon__icontains=salon)
-        if local:
-            universidades = universidades.filter(local__icontains=local)
+        if nombreServicio:
+            servicio = servicio.filter(nombreServicio__icontains=nombreServicio)
+        if cedulaCliente:
+            try:
+                cliente = Cliente.objects.get(cedula=cedulaCliente)
+                servicio = servicio.filter(cedulaCliente=cliente)
+            except Cliente.DoesNotExist:
+                return Response({"detail": "Cliente no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        if descripcion:
+            servicio = servicio.filter(descripcion__icontains=descripcion)
+        if valor:
+            servicio = servicio.filter(valor__icontains=valor)
         if id:
-            universidades = universidades.filter(id=id)'''
+            servicio = servicio.filter(id=id)
         serializer = ServicioSerializers(servicio, many=True)
         print("DEBUG: Data serializada:", serializer.data)
         return Response(serializer.data)

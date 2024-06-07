@@ -1,67 +1,67 @@
 import requests
 from tkinter import messagebox
-#import re
-#from controladores import validaciones
-#from front.controladores.validaciones import Validaciones
-'''import sys
-sys.path.append("controladores")
-from controladores.validaciones import Validaciones'''
-from .validaciones import Validaciones
-from vistas import vistaUniversidad
+
+#from .validaciones import Validaciones
+from vistas import vistaPrincipal
 import threading
 
 import requests
 from tkinter import messagebox
 
 class Peticiones():
-    url_base = 'http://127.0.0.1:8000/v1/universidad'
+    url_base = 'http://127.0.0.1:8000/v2/cliente'
     @staticmethod
-    def ingresar_universidad(txtDocente, txtEstudiante, txtSalon, txtLocal):
-        docente = txtDocente.get()
-        estudiante = txtEstudiante.get()
-        salon = txtSalon.get()
-        local = txtLocal.get()
+    def ingresar_clientes(txtNombre, txtApellido, txtCedula, txtTelefono, txtCorreo):
+        nombre = txtNombre.get()
+        apellido = txtApellido.get()
+        cedula = txtCedula.get()
+        telefono = txtTelefono.get()
+        correoElectronico = txtCorreo.get()
 
-        if not docente or not estudiante or not salon or not local:
+        if not nombre or not apellido or not cedula or not telefono or not correoElectronico:
             messagebox.showwarning("Error", "Por favor completa todos los campos.")
             return
 
-        if (txtDocente.lblAdvertencia.winfo_viewable() or
-            txtEstudiante.lblAdvertencia1.winfo_viewable() or
-            txtSalon.lblAdvertencia.winfo_viewable() or
-            txtLocal.lblAdvertencia.winfo_viewable()):
+        if (txtNombre.lblAdvertencia.winfo_viewable() or
+            txtApellido.lblAdvertencia1.winfo_viewable() or
+            txtCedula.lblAdvertencia.winfo_viewable() or
+            txtTelefono.lblAdvertencia.winfo_viewable() or
+            txtCorreo.lblAdvertencia.winfo_viewable()):
             messagebox.showwarning("Error", "Por favor completa todos los campos correctamente.")
             return
 
         data = {
-            "docente": docente,
-            "estudiante": estudiante,
-            "salon": salon,
-            "local": local
+            "nombre": nombre,
+            "apellido": apellido,
+            "cedula": cedula,
+            "telefono": telefono,
+            "correoElectronico": correoElectronico
         }
 
-        url = 'http://127.0.0.1:8000/v1/universidad'
+        url = 'http://127.0.0.1:8000/v2/cliente'
 
         try:
             response = requests.post(url, json=data)
             if response.status_code == 201:
-                messagebox.showinfo("Éxito", "Universidad creada exitosamente.")
+                messagebox.showinfo("Éxito", "Cliente registrado exitosamente.")
             else:
-                messagebox.showerror("Error", f"Error al crear universidad: {response.text}")
+                messagebox.showerror("Error", f"Error al ingresar cliente: {response.text}")
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
 
     @staticmethod
-    def actualizar(id, docente, estudiante, salon, local):
+    def actualizar(id, nombre, apellido, cedula, telefono, correoElectronico):
         try:
             data = {
-                'docente': docente,
-                'estudiante': estudiante,
-                'salon': salon,
-                'local': local
+                "nombre": nombre,
+                "apellido": apellido,
+                "cedula": cedula,
+                "telefono": telefono,
+                "correoElectronico": correoElectronico
             }
-            url = f'http://127.0.0.1:8000/v1/universidad/{id}/'
+            url = f'http://127.0.0.1:8000/v2/cliente/{id}/'
             resultado = requests.put(url, json=data)
+            resultado.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
             return resultado.status_code
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
@@ -70,32 +70,18 @@ class Peticiones():
     @staticmethod
     def consultar(id):
         try:
-            resultado = requests.get('http://127.0.0.1:8000/v1/universidad/' + str(id))
+            resultado = requests.get('http://127.0.0.1:8000/v2/cliente/' + str(id))
             resultado.raise_for_status()  # Verifica si la solicitud tuvo éxito
             return resultado.json()
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
             return None
 
-    @staticmethod
-    def accion_consultar_boton(txtId, lblConsulta):
-        id_estudiante = txtId.get()
-        if not id_estudiante.isdigit():
-            lblConsulta.config(text="Por favor ingrese un ID válido.")
-            return
-
-        resultado = Peticiones.consultar(id_estudiante)
-        
-        if resultado and 'estudiante' in resultado:
-            lblConsulta.config(text=f"Estudiante: {resultado['estudiante']}")
-        else:
-            lblConsulta.config(text="No se encontraron resultados")
-
 
     @staticmethod
     def buscar(datos):
         try:
-            url = 'http://127.0.0.1:8000/v1/universidad?'
+            url = 'http://127.0.0.1:8000/v2/cliente?'
             for key, value in datos.items():
                 if value:
                     url += f"{key}={value}&"

@@ -9,25 +9,28 @@ from django.http import Http404
 class ClienteAPIView(APIView):
     def get(self, request, format=None,*args, **kwargs):
         print("DEBUG: Entrando en el método GET de ClienteAPIView")
-        universidades = Cliente.objects.all()
-        '''# Filtrar por parámetros de consulta si están presentes
-        docente = request.query_params.get('docente', None)
-        estudiante = request.query_params.get('estudiante', None)
-        salon = request.query_params.get('salon', None)
-        local = request.query_params.get('local', None)
+        clientes = Cliente.objects.all()
+        # Filtrar por parámetros de consulta si están presentes
+        nombre = request.query_params.get('nombre', None)
+        apellido = request.query_params.get('apellido', None)
+        cedula = request.query_params.get('cedula', None)
+        telefono = request.query_params.get('telefono', None)
+        correo = request.query_params.get('correoElectronico', None)
         id = request.query_params.get('id', None)
 
-        if docente:
-            universidades = universidades.filter(docente__icontains=docente)
-        if estudiante:
-            universidades = universidades.filter(estudiante__icontains=estudiante)
-        if salon:
-            universidades = universidades.filter(salon__icontains=salon)
-        if local:
-            universidades = universidades.filter(local__icontains=local)
+        if nombre:
+            clientes = clientes.filter(nombre__icontains=nombre)
+        if apellido:
+            clientes = clientes.filter(apellido__icontains=apellido)
+        if cedula:
+            clientes = clientes.filter(cedula__icontains=cedula)
+        if telefono:
+            clientes = clientes.filter(telefono__icontains=telefono)
+        if correo:
+            clientes = clientes.filter(correo__icontains=correo)
         if id:
-            universidades = universidades.filter(id=id)'''
-        serializer = ClienteSerializer(universidades, many=True)
+            clientes = clientes.filter(id=id)
+        serializer = ClienteSerializer(clientes, many=True)
         print("DEBUG: Data serializada:", serializer.data)
         return Response(serializer.data)
 

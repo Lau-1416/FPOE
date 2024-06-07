@@ -9,7 +9,7 @@ class ServicioSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = Servicio
-        fields = ['nombreServicio', 'cedulaCliente', 'cedulaCliente_id', 'descripcion', 'valor']
+        fields = ['id','nombreServicio', 'cedulaCliente', 'cedulaCliente_id', 'descripcion', 'valor']
 
     def create(self, validated_data):
         cedula = validated_data.pop('cedulaCliente_id')

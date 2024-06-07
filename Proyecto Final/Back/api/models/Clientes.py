@@ -4,8 +4,8 @@ class Cliente(models.Model):
 	nombre		= models.CharField(max_length=50)
 	apellido 	= models.CharField(max_length=50)
 	cedula 		= models.CharField(max_length=20)
-	teléfono 	= models.CharField(max_length=10)
-	correoElectrónico = models.EmailField()
+	telefono 	= models.CharField(max_length=20)
+	correoElectronico = models.EmailField(max_length=30)
     
 
 	def __str__(self):
