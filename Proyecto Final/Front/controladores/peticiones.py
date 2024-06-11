@@ -128,3 +128,15 @@ class Peticiones():
     def guardar_universidades_en_archivo_hilo():
         hilo = threading.Thread(target=Peticiones.guardar_universidades_en_archivo)
         hilo.start()
+
+
+    @staticmethod
+    def cedula_existe(cedula):
+        try:
+            url = f"{Peticiones.url_base}?cedula={cedula}"
+            resultado = requests.get(url)
+            resultado.raise_for_status()
+            return len(resultado.json()) > 0
+        except requests.exceptions.RequestException as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+            return None

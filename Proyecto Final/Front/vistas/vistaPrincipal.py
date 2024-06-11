@@ -122,28 +122,42 @@ class LavelopuesApp:
         telefono = self.txtTelefono.get()
         correoElectronico = self.txtCorreo.get()
 
-        # Confirmación de actualización
-        if not nombre or not apellido or not cedula or not telefono or not correoElectronico:
-            messagebox.showwarning("Error", "No hay ningun Cliente Selecionaado.")
+        if not id:
+            messagebox.showwarning("Error", "No hay ningún cliente seleccionado.")
             return
-        else:
-            respuesta = messagebox.askyesno("Confirmar actualización", "¿Está seguro de que desea actualizar este cliente?")
-            if respuesta:
-                status_code = self.peticiones.actualizar(id, nombre, apellido, cedula, telefono, correoElectronico)
-                if status_code == 200:
-                    messagebox.showinfo("Éxito", "Cliente actualizado correctamente")
-                    self.actualizar_tabla()  # Actualizar la tabla para reflejar los cambios
-                else:
-                    messagebox.showerror("Error", f"Error al actualizar el cliente: Código de estado {status_code}")
-            if not nombre or not apellido or not cedula or not telefono or not correoElectronico:
-                messagebox.showwarning("Error", "No hay ningun Cliente Selecionaado.")
-                return
+
+        cliente_actual = self.peticiones.consultar(id)
+        if cliente_actual and cliente_actual.get('cedula') != cedula:
+            messagebox.showwarning("Error", "No se puede cambiar la cédula de un cliente existente.")
+            self.txtCedula.delete(0, tk.END)
+            self.txtCedula.insert(0, cliente_actual.get('cedula'))
+            return
+
+        if not nombre or not apellido or not cedula or not telefono or not correoElectronico:
+            messagebox.showwarning("Error", "Por favor completa todos los campos.")
+            return
+
+        respuesta = messagebox.askyesno("Confirmar actualización", "¿Está seguro de que desea actualizar este cliente?")
+        if respuesta:
+            status_code = self.peticiones.actualizar(id, nombre, apellido, cedula, telefono, correoElectronico)
+            if status_code == 200:
+                messagebox.showinfo("Éxito", "Cliente actualizado correctamente")
+                self.actualizar_tabla()  # Actualizar la tabla para reflejar los cambios
+                self.limpiar_campos()
+            else:
+                messagebox.showerror("Error", f"Error al actualizar el cliente: Código de estado {status_code}")
 
     
     def ingresar_clientes(self):
+        cedula = self.txtCedula.get()
+        if self.peticiones.cedula_existe(cedula):
+            messagebox.showinfo("Aviso", "La cédula ya ha sido registrada.")
+            return
         Peticiones.ingresar_clientes(self.txtNombre, self.txtApellido, self.txtCedula, self.txtTelefono, self.txtCorreo)
         self.actualizar_tabla()  # Actualizar la tabla después de la inserción
-        #Peticiones.guardar_universidades_en_archivo()
+        self.limpiar_campos()
+
+    
         
     def actualizar_tabla(self):
         # Obtener los datos de la API y actualizar la tabla
@@ -204,8 +218,14 @@ class LavelopuesApp:
 
     def verificar_cliente(self):
         id = self.txtId.get()
+        cedula = self.txtCedula.get()
+
+        if self.peticiones.cedula_existe(cedula):
+            messagebox.showinfo("Aviso", "La cédula ya ha sido registrada.")
+            return
+
         if id:
-            messagebox.showinfo("Aviso", "Este cliente ya esta registrado.")
+            messagebox.showinfo("Aviso", "Este cliente ya está registrado.")
             '''if confirmacion:
                 self.actualizar_cliente()'''
         else:
@@ -239,8 +259,14 @@ class LavelopuesApp:
     
 
  
-def iniciar_ventana_clientes():
-    ventana = tk.Tk()
-    app = LavelopuesApp(ventana)
-    ventana.mainloop()
+def iniciar_ventana_clientes(ventana_principal, callback_volver_inicio):
+    ventana_clientes = tk.Toplevel(ventana_principal)
+    app = LavelopuesApp(ventana_clientes)
 
+    # Detectar cierre de ventana
+    def volver_a_inicio():
+        ventana_clientes.withdraw()
+        callback_volver_inicio()  # Mostrar ventana de inicio nuevamente
+
+    ventana_clientes.protocol("WM_DELETE_WINDOW", volver_a_inicio)
+    ventana_clientes.mainloop()

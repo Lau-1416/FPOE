@@ -5,13 +5,23 @@ class PeticionesServicios:
     url_base = 'http://127.0.0.1:8000/v1/servicio'
 
     @staticmethod
-    def ingresar_servicio(nombre, cedula, descripcion, valor):
+    def ingresar_servicio(nombre, cedula_widget, descripcion, valor):
+        cedula = cedula_widget.get()
         data = {
             "nombreServicio": nombre,
             "cedulaCliente_id": cedula,
             "descripcion": descripcion,
             "valor": valor
         }
+
+
+        if not nombre or not cedula or not descripcion or not valor:
+            messagebox.showwarning("Error", "Por favor completa todos los campos.")
+            return
+        
+        if cedula_widget.lblAdvertencia.winfo_viewable():
+            messagebox.showwarning("Error", "Por favor completa todos los campos correctamente.")
+            return
         url = PeticionesServicios.url_base
 
         try:
@@ -19,7 +29,8 @@ class PeticionesServicios:
             if response.status_code == 201:
                 messagebox.showinfo("Éxito", "Servicio registrado exitosamente.")
             else:
-                messagebox.showerror("Error", f"Error al ingresar servicio: {response.text}")
+                pass
+                #messagebox.showerror("Error", f"Error al ingresar servicio: {response.text}")
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
 

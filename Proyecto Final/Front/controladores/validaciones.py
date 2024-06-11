@@ -37,6 +37,15 @@ class Validaciones():
         else:
             event.widget.lblAdvertencia.grid_remove() 
 
+    def mostrar_advertencia_cedula_cliente(event):
+        nuevoValor = event.widget.get()
+        if not nuevoValor:
+            event.widget.lblAdvertencia.grid_remove() 
+        elif not re.match("^[0-9]*$", nuevoValor):
+            event.widget.lblAdvertencia.grid(row=4, column=1) 
+        else:
+            event.widget.lblAdvertencia.grid_remove()
+
     def mostrar_advertencia_telefono(event):
         nuevoValor = event.widget.get()
         if not nuevoValor:
