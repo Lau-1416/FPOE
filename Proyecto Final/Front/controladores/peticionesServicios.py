@@ -37,13 +37,12 @@ class PeticionesServicios:
     @staticmethod
     def actualizar_servicio(id, nombre, cedula, descripcion, valor):
         data = {
-            "nombre": nombre,
-            "cedula": cedula,
+            "nombreServicio": nombre,
+            "cedulaCliente_id": cedula,
             "descripcion": descripcion,
             "valor": valor
         }
         url = f'{PeticionesServicios.url_base}/{id}/'
-
         try:
             response = requests.put(url, json=data)
             if response.status_code == 200:
@@ -52,6 +51,7 @@ class PeticionesServicios:
                 messagebox.showerror("Error", f"Error al actualizar servicio: {response.text}")
         except Exception as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+    
 
     @staticmethod
     def eliminar_servicio(id):

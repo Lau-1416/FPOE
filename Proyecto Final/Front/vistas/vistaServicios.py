@@ -113,6 +113,7 @@ class ServiciosApp:
                 )) 
             self.tabla.refrescar(self.data)
 
+
     def agregar_servicio(self):
         nombre = self.txtNombreServicio.get()
         cedula = self.txtCedulaCliente
@@ -195,7 +196,7 @@ class ServiciosApp:
         return None
 
     def limpiar_campos(self):
-        self.txtNombreServicio.delete(0, tk.END)
+        self.txtNombreServicio.set('')  # Para limpiar el combobox
         self.txtCedulaCliente.delete(0, tk.END)
         self.txtDescripcion.delete(0, tk.END)
         self.txtValor.delete(0, tk.END)

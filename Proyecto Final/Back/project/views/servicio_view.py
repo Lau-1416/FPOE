@@ -59,7 +59,7 @@ class ServicioDetailAPIView(APIView):
         print(f"DEBUG: Entrando en el método GET de ServicioDetailAPIView para el ID {pk}")
         servicio = self.get_object(pk)
         serializer = ServicioSerializers(servicio)
-        print("DEBUG: Datos de la universidad serializados:", serializer.data)
+        print("DEBUG: Datos de los servicios serializados:", serializer.data)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
