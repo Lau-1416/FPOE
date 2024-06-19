@@ -92,8 +92,7 @@ class Peticiones():
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
             return None
-        
-    @staticmethod
+    @staticmethod     
     def eliminar(id):
         try:
             url = f"{Peticiones.url_base}/{id}"
@@ -107,36 +106,36 @@ class Peticiones():
             return None
         
 
-    @staticmethod
-    def guardar_universidades_en_archivo():
-        try:
-            resultado = requests.get(Peticiones.url_base)
-            resultado.raise_for_status()
-            universidades = resultado.json()
-
-            with open('universidades.txt', 'w', encoding='utf-8') as archivo:
-                for universidad in universidades:
-                    linea = f"ID: {universidad['id']}, Docente: {universidad['docente']}, Estudiante: {universidad['estudiante']}, Salón: {universidad['salon']}, Local: {universidad['local']}\n"
-                    archivo.write(linea)
-            messagebox.showinfo("Éxito", "Universidades guardadas exitosamente en universidades.txt.")
-        except requests.exceptions.RequestException as e:
-            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
-        except Exception as e:
-            messagebox.showerror("Error", f"Error al guardar el archivo: {str(e)}")
-
-    @staticmethod
-    def guardar_universidades_en_archivo_hilo():
-        hilo = threading.Thread(target=Peticiones.guardar_universidades_en_archivo)
-        hilo.start()
+    
+    
 
 
-    @staticmethod
-    def cedula_existe(cedula):
+    def cedula_existe(self, cedula):
         try:
             url = f"{Peticiones.url_base}?cedula={cedula}"
             resultado = requests.get(url)
             resultado.raise_for_status()
-            return len(resultado.json()) > 0
+            data = resultado.json()
+            
+            # Verifica si la respuesta es una lista y si tiene elementos
+            if isinstance(data, list) and len(data) > 0:
+                return True
+            else:
+                return False
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
-            return None
+            return False  # Cambia None a False para manejo más consistente 
+        
+
+    '''
+    def guardar_datos_en_archivo(data):
+        try:
+            with open('gestionLaveloPues.txt', 'a', encoding='utf-8') as archivo:
+                archivo.write(json.dumps(data) + "\n")
+        except Exception as e:
+            messagebox.showerror("Error", f"Error al guardar el archivo: {str(e)}")'''
+
+    @staticmethod
+    def guardar_datos_en_archivo_hilo(data):
+        hilo = threading.Thread(target=Peticiones.guardar_datos_en_archivo, args=(data,))
+        hilo.start()

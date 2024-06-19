@@ -153,16 +153,17 @@ class LavelopuesApp:
         if self.peticiones.cedula_existe(cedula):
             messagebox.showinfo("Aviso", "La cédula ya ha sido registrada.")
             return
+        
         Peticiones.ingresar_clientes(self.txtNombre, self.txtApellido, self.txtCedula, self.txtTelefono, self.txtCorreo)
-        self.actualizar_tabla()  # Actualizar la tabla después de la inserción
+        self.actualizar_tabla()  #Actualizar la tabla después de la inserción
         self.limpiar_campos()
 
     
         
     def actualizar_tabla(self):
         # Obtener los datos de la API y actualizar la tabla
-        parametros_busqueda = {}  # Puedes agregar parámetros específicos si los necesitas
-        resultado = self.peticiones.buscar(parametros_busqueda)
+        parametrosBusqueda = {}  # Puedes agregar parámetros específicos si los necesitas
+        resultado = self.peticiones.buscar(parametrosBusqueda)
         if resultado is not None:
             self.data = []  # Reinicializa data si hay resultado
             for elemento in resultado:

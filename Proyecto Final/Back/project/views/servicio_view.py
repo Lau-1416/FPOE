@@ -27,7 +27,7 @@ class ServicioAPIView(APIView):
                 cliente = Cliente.objects.get(cedula=cedulaCliente)
                 servicio = servicio.filter(cedulaCliente=cliente)
             except Cliente.DoesNotExist:
-                return Response({"detail": "Cliente no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"detail": "Servicio no encontrado."}, status=status.HTTP_404_NOT_FOUND)
         if descripcion:
             servicio = servicio.filter(descripcion__icontains=descripcion)
         if valor:
@@ -42,9 +42,14 @@ class ServicioAPIView(APIView):
         print("DEBUG: Entrando en el método POST de ServicioAPIView")
         serializer = ServicioSerializers(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            print("DEBUG: Objeto guardado:", serializer.data)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            cedula = request.data.get('cedulaCliente')
+            try:
+                cliente = Cliente.objects.get(cedula=cedula)
+                serializer.save(cedulaCliente=cliente)
+                print("DEBUG: Objeto guardado:", serializer.data)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except Cliente.DoesNotExist:
+                return Response({"detail": "Cliente no encontrado."}, status=status.HTTP_400_BAD_REQUEST)
         print("DEBUG: Errores de serialización:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

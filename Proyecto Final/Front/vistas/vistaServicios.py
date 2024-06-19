@@ -120,8 +120,19 @@ class ServiciosApp:
         descripcion = self.txtDescripcion.get()
         valor = self.txtValor.get()
         status_code = self.peticiones.ingresar_servicio(nombre,cedula, descripcion,valor)
-        if status_code == 200:
-            messagebox.showinfo("Éxito", "Servicio agregado correctamente")
+
+        
+        '''id = self.obtener_id_seleccionado()
+        if id:
+            messagebox.showinfo('Aviso', 'El servicio ya esta ingresado')
+            self.limpiar_campos()
+            return'''
+
+        
+        
+        print(status_code)
+        if status_code == 201:
+            #messagebox.showinfo("Éxito", "Servicio agregado correctamente")
             self.actualizar_tabla()
             self.limpiar_campos()
         else:
@@ -129,15 +140,35 @@ class ServiciosApp:
             #messagebox.showerror("Error", "Error al agregar el servicio")
 
     def actualizar_servicio(self):
+        print("Método actualizar_servicio llamado")
         id = self.obtener_id_seleccionado()
+        print(f"ID seleccionado: {id}")
+        
         if not id:
             messagebox.showwarning("Error", "No hay ningún servicio seleccionado")
             return
+        
         nombre = self.txtNombreServicio.get()
         cedula = self.txtCedulaCliente.get()
-        descripcion = self.txtDescripcion.get()
-        valor = self.txtValor.get()
+        descripcion = self.detalles_servicios.get(nombre, {}).get("descripcion", "")
+        valor = self.detalles_servicios.get(nombre, {}).get("valor", "")
+        
+        servicio_actual = self.peticiones.consultar_servicio(id)
+        if servicio_actual and servicio_actual.get('cedulaCliente') != cedula:
+            messagebox.showwarning("Error", "No se puede cambiar la cédula de un cliente existente.")
+            self.txtCedulaCliente.config(state='normal')
+            self.txtCedulaCliente.delete(0, tk.END)
+            self.txtCedulaCliente.insert(0, servicio_actual.get('cedulaCliente'))
+            #self.txtCedulaCliente.config(state='disabled')
+            return
+        
+        
+        
+        print(f"Nombre: {nombre}, Cedula: {cedula}, Descripcion: {descripcion}, Valor: {valor}")
+        
         status_code = self.peticiones.actualizar_servicio(id, nombre, cedula, descripcion, valor)
+        print(f"Status code: {status_code}")
+        
         if status_code == 200:
             messagebox.showinfo("Éxito", "Servicio actualizado correctamente")
             self.actualizar_tabla()

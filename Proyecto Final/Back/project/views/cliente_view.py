@@ -23,11 +23,11 @@ class ClienteAPIView(APIView):
         if apellido:
             clientes = clientes.filter(apellido__icontains=apellido)
         if cedula:
-            clientes = clientes.filter(cedula__icontains=cedula)
+            clientes = clientes.filter(cedula=cedula)
         if telefono:
-            clientes = clientes.filter(telefono__icontains=telefono)
+            clientes = clientes.filter(telefono=telefono)
         if correo:
-            clientes = clientes.filter(correo__icontains=correo)
+            clientes = clientes.filter(correoElectronico=correo)
         if id:
             clientes = clientes.filter(id=id)
         serializer = ClienteSerializer(clientes, many=True)
