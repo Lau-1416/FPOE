@@ -19,10 +19,10 @@ class PeticionesServicios:
             return
 
 
-        '''# Verificar si la cédula existe en la base de datos de clientes
+        #Verificar si la cédula existe en la base de datos de clientes
         if not PeticionesServicios.existe_cliente(cedula):
             messagebox.showerror("Error", "No hay ningún cliente registrado con la cédula que ingresó.")
-            return'''
+            return
 
         
         if cedula_widget.lblAdvertencia.winfo_viewable():

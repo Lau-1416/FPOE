@@ -122,11 +122,11 @@ class ServiciosApp:
         status_code = self.peticiones.ingresar_servicio(nombre,cedula, descripcion,valor)
 
         
-        '''id = self.obtener_id_seleccionado()
+        id = self.obtener_id_seleccionado()
         if id:
             messagebox.showinfo('Aviso', 'El servicio ya esta ingresado')
             self.limpiar_campos()
-            return'''
+            return
 
         
         
