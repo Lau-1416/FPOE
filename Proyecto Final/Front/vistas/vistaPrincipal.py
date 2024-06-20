@@ -6,6 +6,9 @@ from controladores.peticiones import Peticiones
 from vistas.tabla import Tabla
 from controladores.validaciones import Validaciones
 from functools import partial
+from controladores import hilo
+import threading
+
 
 class LavelopuesApp:
     def __init__(self, ventana):
@@ -144,6 +147,7 @@ class LavelopuesApp:
                 messagebox.showinfo("Éxito", "Cliente actualizado correctamente")
                 self.actualizar_tabla()  # Actualizar la tabla para reflejar los cambios
                 self.limpiar_campos()
+                
             else:
                 messagebox.showerror("Error", f"Error al actualizar el cliente: Código de estado {status_code}")
 
@@ -157,6 +161,7 @@ class LavelopuesApp:
         Peticiones.ingresar_clientes(self.txtNombre, self.txtApellido, self.txtCedula, self.txtTelefono, self.txtCorreo)
         self.actualizar_tabla()  #Actualizar la tabla después de la inserción
         self.limpiar_campos()
+        
 
     
         

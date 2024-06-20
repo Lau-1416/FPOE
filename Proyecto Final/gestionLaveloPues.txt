@@ -1,0 +1,2 @@
+{"nombre": "Ame", "apellido": "Ame", "cedula": "1234567890", "telefono": "1234567", "correoElectronico": "Ame@Ame.cc"}
+{"nombreServicio": "Pulido y Descontaminación de Pintura", "cedulaCliente_id": "1234567890", "descripcion": "Eliminación de contaminantes y pulido de la pintura.", "valor": "25000"}

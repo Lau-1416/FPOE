@@ -1,5 +1,7 @@
 import requests
 from tkinter import messagebox
+from controladores.hilo import guardar_datos_en_archivo_hilo  # Importa la función
+
 
 #from .validaciones import Validaciones
 from vistas import vistaPrincipal
@@ -44,6 +46,7 @@ class Peticiones():
             response = requests.post(url, json=data)
             if response.status_code == 201:
                 messagebox.showinfo("Éxito", "Cliente registrado exitosamente.")
+                guardar_datos_en_archivo_hilo(data)
             else:
                 messagebox.showerror("Error", f"Error al ingresar cliente: {response.text}")
         except Exception as e:
@@ -62,6 +65,7 @@ class Peticiones():
             url = f'http://127.0.0.1:8000/v2/cliente/{id}/'
             resultado = requests.put(url, json=data)
             resultado.raise_for_status()  # Esto lanzará una excepción si la respuesta no es 2xx
+            guardar_datos_en_archivo_hilo(data)
             return resultado.status_code
         except requests.exceptions.RequestException as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
@@ -98,6 +102,8 @@ class Peticiones():
             url = f"{Peticiones.url_base}/{id}"
             resultado = requests.delete(url)
             if resultado.status_code == 204:
+                data = {"id": id, "action": "deleted"}
+                guardar_datos_en_archivo_hilo(data)
                 return 200  # Cambiamos el código de estado a 200 cuando la eliminación es exitosa
             else:
                 return resultado.status_code
@@ -105,9 +111,6 @@ class Peticiones():
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
             return None
         
-
-    
-    
 
 
     def cedula_existe(self, cedula):
@@ -127,15 +130,15 @@ class Peticiones():
             return False  # Cambia None a False para manejo más consistente 
         
 
-    '''
-    def guardar_datos_en_archivo(data):
-        try:
-            with open('gestionLaveloPues.txt', 'a', encoding='utf-8') as archivo:
-                archivo.write(json.dumps(data) + "\n")
-        except Exception as e:
-            messagebox.showerror("Error", f"Error al guardar el archivo: {str(e)}")'''
+    
+    ''' def guardar_datos_en_archivo(data):
+            try:
+                with open('gestionLaveloPues.txt', 'a', encoding='utf-8') as archivo:
+                    archivo.write(json.dumps(data) + "\n")
+            except Exception as e:
+                messagebox.showerror("Error", f"Error al guardar el archivo: {str(e)}")
 
-    @staticmethod
-    def guardar_datos_en_archivo_hilo(data):
-        hilo = threading.Thread(target=Peticiones.guardar_datos_en_archivo, args=(data,))
-        hilo.start()
+        @staticmethod
+        def guardar_datos_en_archivo_hilo(data):
+            hilo = threading.Thread(target=Peticiones.guardar_datos_en_archivo, args=(data,))
+            hilo.start()'''

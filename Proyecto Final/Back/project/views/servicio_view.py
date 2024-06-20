@@ -19,7 +19,6 @@ class ServicioAPIView(APIView):
         descripcion = request.query_params.get('descripcion', None)
         valor = request.query_params.get('valor', None)
         id = request.query_params.get('id', None)
-
         if nombreServicio:
             servicio = servicio.filter(nombreServicio__icontains=nombreServicio)
         if cedulaCliente:
@@ -27,7 +26,7 @@ class ServicioAPIView(APIView):
                 cliente = Cliente.objects.get(cedula=cedulaCliente)
                 servicio = servicio.filter(cedulaCliente=cliente)
             except Cliente.DoesNotExist:
-                return Response({"detail": "Servicio no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"detail": "Cliente no encontrado."}, status=status.HTTP_404_NOT_FOUND)
         if descripcion:
             servicio = servicio.filter(descripcion__icontains=descripcion)
         if valor:
@@ -37,19 +36,13 @@ class ServicioAPIView(APIView):
         serializer = ServicioSerializers(servicio, many=True)
         print("DEBUG: Data serializada:", serializer.data)
         return Response(serializer.data)
-
     def post(self, request, format=None):
         print("DEBUG: Entrando en el método POST de ServicioAPIView")
         serializer = ServicioSerializers(data=request.data)
         if serializer.is_valid():
-            cedula = request.data.get('cedulaCliente')
-            try:
-                cliente = Cliente.objects.get(cedula=cedula)
-                serializer.save(cedulaCliente=cliente)
-                print("DEBUG: Objeto guardado:", serializer.data)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            except Cliente.DoesNotExist:
-                return Response({"detail": "Cliente no encontrado."}, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save()
+            print("DEBUG: Objeto guardado:", serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         print("DEBUG: Errores de serialización:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

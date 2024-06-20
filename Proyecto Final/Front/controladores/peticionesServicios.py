@@ -1,15 +1,17 @@
 import requests
 from tkinter import messagebox
+from controladores.hilo import guardar_datos_en_archivo_hilo  # Importa la función
+
 
 class PeticionesServicios:
     url_base = 'http://127.0.0.1:8000/v1/servicio'
 
-    @staticmethod
+    '''@staticmethod
     def ingresar_servicio(nombre, cedula_widget, descripcion, valor):
         cedula = cedula_widget.get()
         data = {
             "nombreServicio": nombre,
-            "cedulaCliente_id": cedula,
+            "cedula_liente": cedula,
             "descripcion": descripcion,
             "valor": valor
         }
@@ -39,7 +41,35 @@ class PeticionesServicios:
                 pass
                 #messagebox.showerror("Error", f"Error al ingresar servicio: {response.text}")
         except Exception as e:
+            messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")'''
+    @staticmethod
+    def ingresar_servicio(nombre, cedula, descripcion, valor):
+        data = {
+            "nombreServicio": nombre,
+            "cedulaCliente_id": cedula,
+            "descripcion": descripcion,
+            "valor": valor
+        }
+        url = PeticionesServicios.url_base
+
+        #Verificar si la cédula existe en la base de datos de clientes
+        if not PeticionesServicios.existe_cliente(cedula):
+            messagebox.showerror("Error", "No hay ningún cliente registrado con la cédula que ingresó.")
+            return
+        else:
+            pass
+
+        try:
+            response = requests.post(url, json=data)
+            if response.status_code == 201:
+                messagebox.showinfo("Éxito", "Servicio registrado exitosamente.")
+                guardar_datos_en_archivo_hilo(data)
+                return 201
+            else:
+                messagebox.showwarning("Error", "Por favor completa todos los campos.")
+        except Exception as e:
             messagebox.showerror("Error", f"Error al conectar con la API: {str(e)}")
+
 
     @staticmethod
     def actualizar_servicio(id, nombre, cedula, descripcion, valor):
@@ -55,10 +85,10 @@ class PeticionesServicios:
         
         try:
             response = requests.put(url, json=data)
-            print(f"Response status code: {response.status_code}")
-            print(f"Response text: {response.text}")
-            
+            #print(f"Response status code: {response.status_code}")
+            #print(f"Response text: {response.text}")
             if response.status_code == 200:
+                guardar_datos_en_archivo_hilo(data)
                 return 200
             else:
                 return response.status_code
@@ -76,6 +106,8 @@ class PeticionesServicios:
             response = requests.delete(url)
             if response.status_code == 204:
                 messagebox.showinfo("Éxito", "Servicio eliminado exitosamente.")
+                data = {"id": id, "action": "deleted"}
+                guardar_datos_en_archivo_hilo(data)
             else:
                 messagebox.showerror("Error", f"Error al eliminar servicio: {response.text}")
         except Exception as e:
@@ -115,10 +147,15 @@ class PeticionesServicios:
     @staticmethod
     def existe_cliente(cedula):
         try:
-            url = f"http://127.0.0.1:8000/v1/cliente/?cedula={cedula}"
+            url = f"http://127.0.0.1:8000/v2/cliente?cedula={cedula}"
             response = requests.get(url)
             if response.status_code == 200:
-                return len(response.json()) > 0
+                data = response.json()
+                # Asegúrate de que data es una lista de clientes y tiene al menos un elemento
+                if isinstance(data, list) and len(data) > 0:
+                    return True
+                else:
+                    return False
             else:
                 return False
         except requests.RequestException as e:

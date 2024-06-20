@@ -5,6 +5,9 @@ from controladores.peticionesServicios import PeticionesServicios
 from vistas.tablaServicios import Tabla
 from functools import partial
 from controladores.validaciones import Validaciones
+import threading
+from controladores import hilo
+
 
 
 class ServiciosApp:
@@ -116,20 +119,24 @@ class ServiciosApp:
 
     def agregar_servicio(self):
         nombre = self.txtNombreServicio.get()
-        cedula = self.txtCedulaCliente
+        cedula = self.txtCedulaCliente.get()
         descripcion = self.txtDescripcion.get()
         valor = self.txtValor.get()
-        status_code = self.peticiones.ingresar_servicio(nombre,cedula, descripcion,valor)
+        print(f"DEBUG: Datos ingresados - Nombre: {nombre}, Cédula: {cedula}, Descripción: {descripcion}, Valor: {valor}")
+        status_code = self.peticiones.ingresar_servicio(nombre,cedula,descripcion,valor)
+        #print(f"DEBUG: Status code recibido: {status_code}")
+        
 
         
-        id = self.obtener_id_seleccionado()
-        if id:
-            messagebox.showinfo('Aviso', 'El servicio ya esta ingresado')
+        # Verificar si hay un servicio seleccionado en la tabla
+        id_seleccionado = self.obtener_id_seleccionado()
+        if id_seleccionado:
+            messagebox.showinfo('Aviso', 'El servicio ya está ingresado')
             self.limpiar_campos()
+            self.actualizar_tabla()
             return
+        
 
-        
-        
         print(status_code)
         if status_code == 201:
             #messagebox.showinfo("Éxito", "Servicio agregado correctamente")
@@ -173,6 +180,7 @@ class ServiciosApp:
             messagebox.showinfo("Éxito", "Servicio actualizado correctamente")
             self.actualizar_tabla()
             self.limpiar_campos()
+            
         else:
             messagebox.showerror("Error", "Error al actualizar el servicio")
 
